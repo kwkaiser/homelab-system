@@ -1,0 +1,7 @@
+---
+- hosts: all
+  name: Setup homelab
+  become: true
+  roles:
+    - users
+    - hardening

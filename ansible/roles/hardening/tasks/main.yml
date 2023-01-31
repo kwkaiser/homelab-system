@@ -1,0 +1,22 @@
+---
+- name: remove ssh root access
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: "sshd -t -f %s"
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+  notify: restart ssh
+
+- name: add sudo rights for main user
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers
+    regexp: "^kwkaiser"
+    line: "kwkaiser ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    validate: "visudo -cf %s"

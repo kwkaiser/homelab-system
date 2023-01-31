@@ -1,0 +1,6 @@
+---
+- name: create main user
+  ansible.builtin.user:
+    name: kwkaiser
+    comment: Karl's account
+    group: sudo
