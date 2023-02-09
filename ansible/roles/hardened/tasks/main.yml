@@ -1,3 +1,4 @@
+# Harden / remove networking access
 ---
 - name: remove ssh root access
   ansible.builtin.lineinfile:

@@ -1,7 +1,20 @@
 ---
 - hosts: all
-  name: Setup homelab
+  name: common setup
   become: true
+
+  roles: 
+    - knows-me
+    - hardened
+    - comfy
+    - dockerized
+
+- hosts: coriander
+  name: zfs-setup
+  become: true
+
+  vars_files: 
+    - zfs.yml
+
   roles:
-    - users
-    - hardening
+    - mrlesmithjr.zfs 
