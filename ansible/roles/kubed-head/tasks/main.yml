@@ -11,4 +11,17 @@
   shell: | 
     mkdir -p /home/vagrant/.kube
     cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
-    chown vagrant:vagrant /home/vagrant/.kube/config  
+    chown vagrant:vagrant /home/vagrant/.kube/config
+
+- name: install calico pod network
+  become: false
+  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
+
+- name: create calico as resource
+  become: false
+  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
+
+- name: remove taint from head node
+  become: false 
+  command: |
+    kubectl taint nodes --all node-role.kubernetes.io/control-plane-

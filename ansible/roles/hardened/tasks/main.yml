@@ -21,3 +21,16 @@
     line: "kwkaiser ALL=(ALL) NOPASSWD: ALL"
     state: present
     validate: "visudo -cf %s"
+
+- name: install fail2ban
+  apt: 
+    state: present
+    update_cache: yes
+    name: fail2ban 
+
+- name: enable fail2ban
+  ansible.builtin.systemd:
+    name: fail2ban
+    daemon_reload: true
+    enabled: true
+    state: started
