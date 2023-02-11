@@ -1,16 +1,42 @@
 # Ensure hosts have docker installed & enabled
 ---
-- name: add docker key
-  ansible.builtin.apt_key:
-    url: "https://download.docker.com/linux/debian/gpg"
-
-- name: install docker
+- name: install packages to use apt over https
   ansible.builtin.apt:
-    update_cache: true
     state: present
+    update_cache: yes
     name:
-      - docker 
-      - docker-compose
+      - ca-certificates 
+      - curl 
+      - gnupg 
+      - lsb-release 
+
+- name: add docker key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: add docker repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+    state: present
+
+- name: install docker & deps
+  apt: 
+    state: present
+    update_cache: yes
+    name:
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-buildx-plugin 
+      - docker-compose-plugin 
+
+- name: add main user to docker
+  user:
+    name: kwkaiser
+    append: true
+    groups:
+      - docker
 
 - name: enable docker
   ansible.builtin.systemd:

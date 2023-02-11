@@ -1,0 +1,56 @@
+---
+- name: remove swapfile from /etc/fstap
+  ansible.builtin.mount:
+    fstype: swap
+    state: absent
+    name: 
+      - swap
+      - none
+
+- name: disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+
+- name: add apt key for k8s 
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: add repo for k8s
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+
+- name: install k8s binaries
+  apt: 
+    state: present
+    update_cache: yes
+    name: 
+      - kubelet
+      - kubeadm
+      - kubectl
+
+- name: configure node ip
+  lineinfile:
+    path: /etc/default/kubelet
+    create: yes
+    line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_default_ipv4.address }}
+
+- name: enable / restart kubelet
+  ansible.builtin.systemd:
+    name: kubelet
+    daemon_reload: true
+    enabled: true
+    state: restarted
+
+- name: remove containerd config
+  ansible.builtin.file:
+    path: /etc/containerd/config.toml
+    state: absent
+
+- name: restart containerd
+  ansible.builtin.systemd:
+    name: containerd
+    state: restarted

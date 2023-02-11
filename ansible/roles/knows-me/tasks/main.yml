@@ -5,4 +5,6 @@
   ansible.builtin.user:
     name: kwkaiser
     comment: Karl's account
-    group: sudo
+    append: true
+    groups:
+      - sudo
