@@ -1,27 +1,47 @@
 ---
+- name: create dir to denote creation of cluster
+  ansible.builtin.file:
+    path: /home/vagrant/kube-init
+    state: directory
+    mode: '0777'
+
 - name: initialize k8s cluster using kubeadm
-  command: >
-    kubeadm init \
-      --apiserver-advertise-address={{ ansible_default_ipv4.address }} \
-      --apiserver-cert-extra-sans={{ ansible_default_ipv4.address }} \
-      --node-name paprika \
-      --pod-network-cidr=192.168.56.0/8
+  shell: |  
+    kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/24"
+    touch /home/vagrant/kube-init/cluster
+  args:
+    creates: /home/vagrant/kube-init/cluster
+
 
 - name: setup kubeconfig for main user
   shell: | 
     mkdir -p /home/vagrant/.kube
     cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
     chown vagrant:vagrant /home/vagrant/.kube/config
+  args:
+    creates: /home/vagrant/.kube
 
 - name: install calico pod network
   become: false
-  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
+  shell: | 
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml 
+    touch /home/vagrant/kube-init/network-add
+  args:
+    creates: /home/vagrant/kube-init/network-add
+
 
 - name: create calico as resource
   become: false
-  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
+  shell: | 
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml 
+    touch /home/vagrant/kube-init/network-create
+  args:
+    creates: /home/vagrant/kube-init/network-create
 
 - name: remove taint from head node
   become: false 
-  command: |
-    kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+  shell: |
+    kubectl taint nodes --all node-role.kubernetes.io/control-plane- 
+    touch /home/vagrant/kube-init/node-untaint
+  args:
+    creates: /home/vagrant/kube-init/node-untaint

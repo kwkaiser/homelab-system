@@ -5,8 +5,8 @@
 
   roles: 
     - knows-me
-    - hardened
-    - comfy
+    # - hardened
+    # - comfy
     - kubed
 
 - hosts: paprika
@@ -16,12 +16,12 @@
   roles:
     - kubed-head
 
-- hosts: coriander
-  name: zfs-setup
-  become: true
+# - hosts: coriander
+#   name: zfs-setup
+#   become: true
 
-  vars_files: 
-    - zfs.yml
+#   vars_files: 
+#     - zfs.yml
 
-  roles:
-    - mrlesmithjr.zfs 
+#   roles:
+#     - mrlesmithjr.zfs 

@@ -17,6 +17,13 @@
     name:
       - curl 
 
+- name: install additional ansible utils
+  ansible.builtin.apt:
+    state: present
+    update_cache: yes
+    name:
+      - python3-netaddr
+
 - name: install system utils
   ansible.builtin.apt:
     state: present
