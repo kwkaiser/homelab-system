@@ -7,7 +7,7 @@
 
 - name: initialize k8s cluster using kubeadm
   shell: | 
-    kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/24"
+    kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/16"
     touch /home/kwkaiser/kube-init/cluster
   args:
     creates: /home/kwkaiser/kube-init/cluster

@@ -36,7 +36,7 @@
   lineinfile:
     path: /etc/default/kubelet
     create: yes
-    line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_default_ipv4.address }}
+    line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_host }}
 
 - name: enable / restart kubelet
   ansible.builtin.systemd:
