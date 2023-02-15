@@ -9,3 +9,11 @@
     append: true
     groups:
       - sudo
+
+- name: copy ssh key from keepass
+  viczem.keepass.attachment:
+      database: "{{ keepass_path }}"
+      password: "{{ keepass_pw }}"
+      entrypath: /root/personal/homelab/ssh/box
+      attachment: pubkey 
+      dest: /home/kwkaiser/.ssh/authorized_keys/box
