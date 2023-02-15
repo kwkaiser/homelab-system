@@ -5,20 +5,20 @@
 
   roles: 
     - knows-me
-    # - hardened
-    # - comfy
+    - hardened
+    - comfy
 
-# - hosts: heads
-#   name: setup kubernetes cluster head
-#   become: true
-#   roles:
-#     - kubed-head
+- hosts: heads
+  name: setup kubernetes cluster head
+  become: true
+  roles:
+    - kubed-head
 
-# - hosts: nodes
-#   name: setup kubernetes cluster nodes
-#   become: true 
-#   roles:
-#     - kubed-node
+- hosts: nodes
+  name: setup kubernetes cluster nodes
+  become: true 
+  roles:
+    - kubed-node
 
 # - hosts: coriander
 #   name: zfs-setup

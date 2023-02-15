@@ -6,6 +6,6 @@
     mode: '0777'
 
 - name: join cluster
-  shell: "{{ hostvars['homelab-thinkcentre']['kube_join_cluster_command']['stdout'] }} && touch /home/vagrant/kube-init/joined"
+  shell: "{{ hostvars['homelab-thinkcentre']['kube_join_cluster_command']['stdout'] }} && touch /home/kwkaiser/kube-init/joined"
   args:
-    creates: /home/kwkaiser/kube-init
+    creates: /home/kwkaiser/kube-init/joined

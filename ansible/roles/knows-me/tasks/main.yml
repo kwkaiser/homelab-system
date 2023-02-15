@@ -3,7 +3,9 @@
 - name: create main user
   ansible.builtin.user:
     name: kwkaiser
+    state: present
     comment: Karl's account
+    shell: /bin/bash
     append: true
     groups:
       - sudo

@@ -1,52 +1,51 @@
 ---
 - name: create dir to denote creation of cluster
   ansible.builtin.file:
-    path: home/kwkaiser/kube-init
+    path: /home/kwkaiser/kube-init
     state: directory
     mode: '0777'
 
 - name: initialize k8s cluster using kubeadm
-  shell: |  
+  shell: | 
     kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/24"
-    touch home/kwkaiser/kube-init/cluster
+    touch /home/kwkaiser/kube-init/cluster
   args:
-    creates: home/kwkaiser/kube-init/cluster
+    creates: /home/kwkaiser/kube-init/cluster
 
 
 - name: setup kubeconfig for main user
   shell: | 
-    mkdir -p home/kwkaiser/.kube
-    cp -i /etc/kubernetes/admin.conf home/kwkaiser/.kube/config
-    chown vagrant:vagrant home/kwkaiser/.kube/config
+    mkdir -p /home/kwkaiser/.kube
+    cp -i /etc/kubernetes/admin.conf /home/kwkaiser/.kube/config
+    chown kwkaiser:kwkaiser /home/kwkaiser/.kube/config
   args:
-    creates: home/kwkaiser/.kube
+    creates: /home/kwkaiser/.kube
 
 - name: install calico pod network
-  become: false
+  become_user: kwkaiser
   shell: | 
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml 
-    touch home/kwkaiser/kube-init/network-add
+    touch /home/kwkaiser/kube-init/network-add
   args:
-    creates: home/kwkaiser/kube-init/network-add
+    creates: /home/kwkaiser/kube-init/network-add
 
 
 - name: create calico as resource
-  become: false
+  become_user: kwkaiser
   shell: | 
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml 
-    touch home/kwkaiser/kube-init/network-create
+    touch /home/kwkaiser/kube-init/network-create
   args:
-    creates: home/kwkaiser/kube-init/network-create
+    creates: /home/kwkaiser/kube-init/network-create
 
 - name: remove taint from head node
-  become: false 
+  become_user: kwkaiser
   shell: |
     kubectl taint nodes --all node-role.kubernetes.io/control-plane- 
-    touch home/kwkaiser/kube-init/node-untaint
+    touch /home/kwkaiser/kube-init/node-untaint
   args:
-    creates: home/kwkaiser/kube-init/node-untaint
+    creates: /home/kwkaiser/kube-init/node-untaint
 
 - name: register kube join command
-  become: false
   command: kubeadm token create --print-join-command
   register: kube_join_cluster_command

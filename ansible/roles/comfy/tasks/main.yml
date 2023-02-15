@@ -23,6 +23,7 @@
     update_cache: yes
     name:
       - python3-netaddr
+      - acl
 
 - name: install system utils
   ansible.builtin.apt:
