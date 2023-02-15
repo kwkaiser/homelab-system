@@ -1,20 +1,24 @@
 ---
-- hosts: all
-  name: common setup
+- hosts: all 
+  name: setup common utils shared on all
   become: true
 
   roles: 
     - knows-me
     # - hardened
     # - comfy
-    - kubed
 
-- hosts: paprika
-  name: k8s head setup
-  become: true
-  
-  roles:
-    - kubed-head
+# - hosts: heads
+#   name: setup kubernetes cluster head
+#   become: true
+#   roles:
+#     - kubed-head
+
+# - hosts: nodes
+#   name: setup kubernetes cluster nodes
+#   become: true 
+#   roles:
+#     - kubed-node
 
 # - hosts: coriander
 #   name: zfs-setup
@@ -24,4 +28,4 @@
 #     - zfs.yml
 
 #   roles:
-#     - mrlesmithjr.zfs 
+    # - mrlesmithjr.zfs 
