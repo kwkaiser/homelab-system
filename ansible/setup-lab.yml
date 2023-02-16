@@ -5,24 +5,24 @@
   roles: 
     - knows-me
     - hardened
-    - comfy
+#     - comfy
 
-- hosts: homelab-mainarray
-  name: setup zfs on storage array
-  become: true
-  vars_files:
-    - zfs.yml
-  roles: 
-    - mrlesmithjr.zfs
+# - hosts: homelab-mainarray
+#   name: setup zfs on storage array
+#   become: true
+#   vars_files:
+#     - zfs.yml
+#   roles: 
+#     - mrlesmithjr.zfs
 
-- hosts: heads
-  name: setup kubernetes cluster head
-  become: true
-  roles:
-    - kubed-head
+# - hosts: heads
+#   name: setup kubernetes cluster head
+#   become: true
+#   roles:
+#     - kubed-head
 
-- hosts: nodes
-  name: setup kubernetes cluster nodes
-  become: true 
-  roles:
-    - kubed-node
+# - hosts: nodes
+#   name: setup kubernetes cluster nodes
+#   become: true 
+#   roles:
+#     - kubed-node

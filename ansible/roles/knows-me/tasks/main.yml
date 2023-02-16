@@ -12,7 +12,7 @@
 
 - name: create ssh dir if missing
   ansible.builtin.file:
-    dest: /home/kwkaiser/.ssh/authorized_keys
+    dest: /home/kwkaiser/.ssh
     mode: '0700'
     state: directory 
     owner: kwkaiser
@@ -22,20 +22,12 @@
   ansible.builtin.file:
     dest: /home/kwkaiser/.ssh/authorized_keys
     mode: '0600'
-    state: directory 
+    state: touch
     owner: kwkaiser
     group: kwkaiser
 
-- name: add empty homelab ssh key
-  ansible.builtin.file:
-    dest: /home/kwkaiser/.ssh/authorized_keys/box
-    mode: '0600'
-    owner: kwkaiser
-    group: kwkaiser 
-    state: touch
-
 - name: copy homelab ssh key content
   ansible.builtin.lineinfile:
-    path: /home/kwkaiser/.ssh/authorized_keys/box
+    path: /home/kwkaiser/.ssh/authorized_keys
     regexp: '.*'
     line: "{{box_pubkey}}\n"

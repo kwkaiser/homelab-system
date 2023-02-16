@@ -8,11 +8,11 @@
     state: present
     validate: "sshd -t -f %s"
   with_items:
-    - regexp: "^PasswordAuthentication"
+    - regexp: "^#PasswordAuthentication"
       line: "PasswordAuthentication no"
-    - regexp: "^PubkeyAuthentication"
+    - regexp: "^#PubkeyAuthentication"
       line: "PubkeyAuthentication yes"
-    - regexp: "^PermitRootLogin"
+    - regexp: "^#PermitRootLogin"
       line: "PermitRootLogin no"
   notify: restart ssh
 
