@@ -9,6 +9,7 @@
       - fzf
       - tldr
       - vim
+      - jq
 
 - name: install networking utils
   ansible.builtin.apt:

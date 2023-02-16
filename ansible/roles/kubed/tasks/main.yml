@@ -39,11 +39,9 @@
     line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_host }}
 
 - name: start kubelet
+  notify: containerd config
   ansible.builtin.systemd:
     name: kubelet
     daemon_reload: true
     enabled: true
-    state: started
-  notify:
-    - clear containerd config
-    - restart containerd
+    state: restarted

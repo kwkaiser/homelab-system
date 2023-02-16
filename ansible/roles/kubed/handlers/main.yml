@@ -1,10 +1,11 @@
 ---
-- name: clear containerd config
-  ansible.builtin.file:
-    path: /etc/containerd/config.toml
-    state: absent
-
 - name: restart containerd
   ansible.builtin.systemd:
     name: containerd
     state: restarted
+
+- name: containerd config 
+  ansible.builtin.file:
+    path: /etc/containerd/config.toml
+    state: absent
+  notify: restart containerd
