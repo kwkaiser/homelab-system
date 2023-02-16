@@ -1,4 +1,8 @@
 ---
+- name: determine env from environment
+  command: "echo {{lookup('env', 'ANSIBLE_ENV')}}"
+  register: env
+
 - name: determine env
   set_fact:
     dev: "{{ env is match('dev') }}"
@@ -18,3 +22,7 @@
   when: prod or test 
   set_fact:
     keepass_path: "{{ playbook_dir }}/keys.dbx"
+
+- name: include secrets
+  ansible.builtin.include_vars:
+    file: devtest-secrets.yml

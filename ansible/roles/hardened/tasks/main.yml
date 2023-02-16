@@ -10,6 +10,8 @@
   with_items:
     - regexp: "^PasswordAuthentication"
       line: "PasswordAuthentication no"
+    - regexp: "^PubkeyAuthentication"
+      line: "PubkeyAuthentication yes"
     - regexp: "^PermitRootLogin"
       line: "PermitRootLogin no"
   notify: restart ssh
