@@ -1,4 +1,26 @@
 ---
+- name: denote kube init facts
+  ansible.builtin.set_fact:
+    kube_init: /home/kwkaiser/.kube-init
+
+- name: denote additional kube init facts 
+  ansible.builtin.set_fact:
+    ki_containerd_config: "{{kube_init}}/containerd-config"
+    ki_containerd_restart: "{{kube_init}}/containerd-restart"
+    ki_cluster: "{{kube_init}}/cluster"
+    ki_network_add: "{{kube_init}}/network_add"
+    ki_network_create: "{{kube_init}}/network_add"
+    ki_untaint: "{{kube_init}}/untaint"
+    ki_joined: "{{kube_init}}/joined"
+
+- name: create dir to denote creation of cluster
+  ansible.builtin.file:
+    path: "{{kube_init}}"
+    state: directory
+    owner: kwkaiser
+    group: kwkaiser
+    mode: '0777'
+
 - name: remove swapfile from /etc/fstap
   ansible.builtin.mount:
     fstype: swap
@@ -12,19 +34,14 @@
   when: ansible_swaptotal_mb > 0
 
 - name: rm config
-  notify: restart containerd
-  ansible.builtin.file:
-    path: /etc/containerd/config.toml
-    state: touch
+  shell: rm /etc/containerd/config.toml && touch "{{ki_containerd_config}}"
+  args:
+    creates: "{{ki_containerd_config}}"
 
-- name: wait for containerd to start
-  ansible.builtin.service:
-    name: containerd
-    state: started
-  register: myserviceDetails
-  until: myserviceDetails.status.ActiveState == "active"
-  retries: 15
-  delay: 5 
+- name: restart containerd
+  shell: systemctl restart containerd && touch "{{ki_containerd_restart}}"
+  args:
+    creates: "{{ki_containerd_restart}}"
 
 - name: add apt key for k8s 
   apt_key:
@@ -57,4 +74,4 @@
     name: kubelet
     daemon_reload: true
     enabled: true
-    state: restarted
+    state: started
