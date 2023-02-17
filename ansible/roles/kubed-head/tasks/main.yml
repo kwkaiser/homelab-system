@@ -12,7 +12,6 @@
   args:
     creates: /home/kwkaiser/.kube-init/cluster
 
-
 - name: setup kubeconfig for main user
   shell: | 
     mkdir -p /home/kwkaiser/.kube

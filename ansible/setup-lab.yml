@@ -18,7 +18,8 @@
 - hosts: heads
   name: setup kubernetes cluster head
   become: true
-  roles:
+  roles: # split kubed & kube head so handlers run correctly
+    - kubed
     - kubed-head
 
 # - hosts: nodes

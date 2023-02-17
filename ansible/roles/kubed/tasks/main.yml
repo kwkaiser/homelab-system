@@ -11,6 +11,20 @@
   command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
+- name: rm config
+  notify: restart containerd
+  ansible.builtin.file:
+    path: /etc/containerd/config.toml
+    state: touch
+
+- name: wait for containerd to start
+  ansible.builtin.service:
+    name: containerd
+    state: started
+  register: myserviceDetails
+  until: myserviceDetails.status.ActiveState == "active"
+  retries: 15
+  delay: 5 
 
 - name: add apt key for k8s 
   apt_key:
@@ -38,8 +52,7 @@
     create: yes
     line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_host }}
 
-- name: start kubelet
-  notify: containerd config
+- name: start kubelet 
   ansible.builtin.systemd:
     name: kubelet
     daemon_reload: true
