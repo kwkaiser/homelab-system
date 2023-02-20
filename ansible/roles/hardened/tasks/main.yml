@@ -36,3 +36,26 @@
     daemon_reload: true
     enabled: true
     state: started
+
+- name: install ufw
+  apt: 
+    state: present
+    update_cache: yes
+    name: ufw
+
+- name: allow ssh in ufw
+  community.general.ufw:
+    comment: ssh
+    rule: allow
+    port: 22
+
+- name: enable ufw (systemd)
+  ansible.builtin.systemd:
+    name: ufw
+    daemon_reload: true
+    enabled: true
+    state: started
+
+- name: enable ufw (ufw)
+  community.general.ufw:
+    state: enabled

@@ -43,6 +43,44 @@
   args:
     creates: "{{ki_containerd_restart}}"
 
+- name: k8s port (api server)
+  community.general.ufw:
+    comment: k8s port (api server)
+    rule: allow
+    port: 6443 
+
+- name: k8s port (etcd server api)
+  community.general.ufw:
+    comment: k8s port (etcd server api)
+    rule: allow
+    from_port: 2379
+    to_port: 2380
+
+- name: k8s port (kubelet api)
+  community.general.ufw:
+    comment: k8s port (kubelet api)
+    rule: allow
+    port: 10250
+
+- name: k8s port (kube scheduler)
+  community.general.ufw:
+    comment: k8s port (kube scheduler)
+    rule: allow
+    port: 10259
+
+- name: k8s port (kube controller)
+  community.general.ufw:
+    comment: k8s port (kube controller)
+    rule: allow
+    port: 10257
+
+- name: k8s port (node port services)
+  community.general.ufw:
+    comment: k8s port (node port services)
+    rule: allow
+    from_port: 30000
+    to_port: 32767
+
 - name: add apt key for k8s 
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
