@@ -9,7 +9,7 @@
     ki_containerd_restart: "{{kube_init}}/containerd-restart"
     ki_cluster: "{{kube_init}}/cluster"
     ki_network_add: "{{kube_init}}/network_add"
-    ki_network_create: "{{kube_init}}/network_add"
+    ki_network_create: "{{kube_init}}/network_create"
     ki_untaint: "{{kube_init}}/untaint"
     ki_joined: "{{kube_init}}/joined"
 
@@ -74,4 +74,4 @@
     name: kubelet
     daemon_reload: true
     enabled: true
-    state: started
+    state: restarted

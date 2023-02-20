@@ -20,7 +20,7 @@
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml 
     touch "{{ki_network_add}}"
   args:
-    creates: "{ki_network_add}}"
+    creates: "{{ki_network_add}}"
 
 
 - name: create calico as resource
@@ -37,7 +37,7 @@
     kubectl taint nodes --all node-role.kubernetes.io/control-plane- 
     touch "{{ki_untaint}}"
   args:
-    creates: /home/kwkaiser/.kube-init/node-untaint
+    creates: "{{ki_untaint}}"
 
 - name: register kube join command
   command: kubeadm token create --print-join-command
