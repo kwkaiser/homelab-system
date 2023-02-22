@@ -25,7 +25,7 @@
     validate: "visudo -cf %s"
 
 - name: Install fail2ban
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     name: fail2ban
@@ -38,7 +38,7 @@
     state: started
 
 - name: Install ufw
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     name: ufw

@@ -3,7 +3,7 @@
   name: Setup common utils shared on all
   become: true
   roles:
-    - knows-me
+    - knows_me
     - hardened
     - comfy
 
@@ -12,17 +12,17 @@
 #   become: true
 #   vars_files:
 #     - zfs.yml
-#   roles: 
+#   roles:
 #     - mrlesmithjr.zfs
 
 - hosts: heads
   name: Setup kubernetes cluster head
   become: true
   roles:
-    - kubed-head
+    - kubed_head
 
 - hosts: nodes
   name: Setup kubernetes cluster nodes
   become: true
   roles:
-    - kubed-node
+    - kubed_node
