@@ -1,6 +1,6 @@
 # Harden / remove networking access
 ---
-- name: remove ssh root access
+- name: Remove ssh root access
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
@@ -14,9 +14,9 @@
       line: "PubkeyAuthentication yes"
     - regexp: "^#PermitRootLogin"
       line: "PermitRootLogin no"
-  notify: restart ssh
+  notify: Restart ssh
 
-- name: add sudo rights for main user
+- name: Add sudo rights for main user
   ansible.builtin.lineinfile:
     dest: /etc/sudoers
     regexp: "^kwkaiser"
@@ -24,38 +24,38 @@
     state: present
     validate: "visudo -cf %s"
 
-- name: install fail2ban
-  apt: 
+- name: Install fail2ban
+  apt:
     state: present
-    update_cache: yes
-    name: fail2ban 
+    update_cache: true
+    name: fail2ban
 
-- name: enable fail2ban
+- name: Enable fail2ban
   ansible.builtin.systemd:
     name: fail2ban
     daemon_reload: true
     enabled: true
     state: started
 
-- name: install ufw
-  apt: 
+- name: Install ufw
+  apt:
     state: present
-    update_cache: yes
+    update_cache: true
     name: ufw
 
-- name: allow ssh in ufw
+- name: Allow ssh in ufw
   community.general.ufw:
     comment: ssh
     rule: allow
     port: 22
 
-- name: enable ufw (systemd)
+- name: Enable ufw (systemd)
   ansible.builtin.systemd:
     name: ufw
     daemon_reload: true
     enabled: true
     state: started
 
-- name: enable ufw (ufw)
+- name: Enable ufw (ufw)
   community.general.ufw:
     state: enabled

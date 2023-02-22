@@ -1,8 +1,8 @@
 ---
-- hosts: all 
-  name: setup common utils shared on all
+- hosts: all
+  name: Setup common utils shared on all
   become: true
-  roles: 
+  roles:
     - knows-me
     - hardened
     - comfy
@@ -16,13 +16,13 @@
 #     - mrlesmithjr.zfs
 
 - hosts: heads
-  name: setup kubernetes cluster head
+  name: Setup kubernetes cluster head
   become: true
-  roles: 
+  roles:
     - kubed-head
 
 - hosts: nodes
-  name: setup kubernetes cluster nodes
-  become: true 
+  name: Setup kubernetes cluster nodes
+  become: true
   roles:
     - kubed-node

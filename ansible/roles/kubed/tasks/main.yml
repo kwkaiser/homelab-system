@@ -1,113 +1,114 @@
 ---
-- name: denote kube init facts
+- name: Denote kube init facts
   ansible.builtin.set_fact:
     kube_init: /home/kwkaiser/.kube-init
 
-- name: denote additional kube init facts 
+- name: Denote additional kube init facts
   ansible.builtin.set_fact:
-    ki_containerd_config: "{{kube_init}}/containerd-config"
-    ki_containerd_restart: "{{kube_init}}/containerd-restart"
-    ki_cluster: "{{kube_init}}/cluster"
-    ki_network_add: "{{kube_init}}/network_add"
-    ki_network_create: "{{kube_init}}/network_create"
-    ki_untaint: "{{kube_init}}/untaint"
-    ki_joined: "{{kube_init}}/joined"
+    ki_containerd_config: "{{ kube_init }}/containerd-config"
+    ki_containerd_restart: "{{ kube_init }}/containerd-restart"
+    ki_cluster: "{{ kube_init }}/cluster"
+    ki_network_add: "{{ kube_init }}/network_add"
+    ki_network_create: "{{ kube_init }}/network_create"
+    ki_untaint: "{{ kube_init }}/untaint"
+    ki_joined: "{{ kube_init }}/joined"
 
-- name: create dir to denote creation of cluster
+- name: Create dir to denote creation of cluster
   ansible.builtin.file:
-    path: "{{kube_init}}"
+    path: "{{ kube_init }}"
     state: directory
     owner: kwkaiser
     group: kwkaiser
-    mode: '0777'
+    mode: "0777"
 
-- name: remove swapfile from /etc/fstap
-  ansible.builtin.mount:
+- name: Remove swapfile from /etc/fstap
+  ansible.posix.mount:
     fstype: swap
     state: absent
-    name: 
+    name:
       - swap
       - none
 
-- name: disable swap
-  command: swapoff -a
+- name: Disable swap
+  ansible.builtin.command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
-- name: rm config
-  shell: rm /etc/containerd/config.toml && touch "{{ki_containerd_config}}"
+- name: Rm config
+  ansible.builtin.shell: rm /etc/containerd/config.toml && touch "{{ki_containerd_config }}"
   args:
-    creates: "{{ki_containerd_config}}"
+    creates: "{{ ki_containerd_config }}"
 
-- name: restart containerd
-  shell: systemctl restart containerd && touch "{{ki_containerd_restart}}"
+- name: Restart containerd
+  ansible.builtin.shell: systemctl restart containerd && touch "{{ ki_containerd_restart }}"
   args:
-    creates: "{{ki_containerd_restart}}"
+    creates: "{{ ki_containerd_restart }}"
 
-- name: k8s port (api server)
+- name: K8s port (api server)
   community.general.ufw:
     comment: k8s port (api server)
     rule: allow
-    port: 6443 
+    port: 6443
 
-- name: k8s port (etcd server api)
+- name: K8s port (etcd server api)
   community.general.ufw:
     comment: k8s port (etcd server api)
     rule: allow
     from_port: 2379
     to_port: 2380
 
-- name: k8s port (kubelet api)
+- name: K8s port (kubelet api)
   community.general.ufw:
     comment: k8s port (kubelet api)
     rule: allow
     port: 10250
 
-- name: k8s port (kube scheduler)
+- name: K8s port (kube scheduler)
   community.general.ufw:
     comment: k8s port (kube scheduler)
     rule: allow
     port: 10259
 
-- name: k8s port (kube controller)
+- name: K8s port (kube controller)
   community.general.ufw:
     comment: k8s port (kube controller)
     rule: allow
     port: 10257
 
-- name: k8s port (node port services)
+- name: K8s port (node port services)
   community.general.ufw:
     comment: k8s port (node port services)
     rule: allow
     from_port: 30000
     to_port: 32767
 
-- name: add apt key for k8s 
-  apt_key:
+- name: Add apt key for k8s
+  ansible.builtin.apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
 
-- name: add repo for k8s
-  apt_repository:
+- name: Add repo for k8s
+  ansible.builtin.apt_repository:
     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes.list
 
-- name: install k8s binaries
-  apt: 
+- name: Install k8s binaries
+  ansible.builtin.apt:
     state: present
-    update_cache: yes
-    name: 
+    update_cache: true
+    name:
       - kubelet
       - kubeadm
       - kubectl
 
-- name: configure node ip
-  lineinfile:
+- name: Configure node ip
+  ansible.builtin.lineinfile:
     path: /etc/default/kubelet
-    create: yes
+    create: true
+    mode: "0700"
     line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_host }}
 
-- name: start kubelet 
+- name: Start kubelet
   ansible.builtin.systemd:
     name: kubelet
     daemon_reload: true

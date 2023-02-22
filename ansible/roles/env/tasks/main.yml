@@ -10,7 +10,7 @@
     test: "{{ env is match('test') }}"
 
 - name: print env
-  debug: 
+  debug:
     msg: "Using environment {{ env }}: (dev, {{dev}}), (test, {{test}}), (prod, {{prod}})"
 
 - name: set dev vars
@@ -19,7 +19,7 @@
     keepass_path: "{{ lookup('env', 'HOME') }}/documents/keys/keys.dbx"
 
 - name: set dev vars
-  when: prod or test 
+  when: prod or test
   set_fact:
     keepass_path: "{{ playbook_dir }}/keys.dbx"
 

@@ -1,9 +1,8 @@
 # Ensure that hosts have required commonly used CLI utils
----
-- name: install cli utils
+- name: Install cli utils
   ansible.builtin.apt:
     state: present
-    update_cache: yes
+    update_cache: true
     name:
       - htop
       - fzf
@@ -11,26 +10,26 @@
       - vim
       - jq
 
-- name: install networking utils
+- name: Install networking utils
   ansible.builtin.apt:
     state: present
-    update_cache: yes
+    update_cache: true
     name:
-      - curl 
+      - curl
 
-- name: install additional ansible utils
+- name: Install additional ansible utils
   ansible.builtin.apt:
     state: present
-    update_cache: yes
+    update_cache: true
     name:
       - python3-netaddr
       - acl
 
-- name: install system utils
+- name: Install system utils
   ansible.builtin.apt:
     state: present
-    update_cache: yes
+    update_cache: true
     name:
       - gnupg
       - ca-certificates
-      - lsb-release 
+      - lsb-release

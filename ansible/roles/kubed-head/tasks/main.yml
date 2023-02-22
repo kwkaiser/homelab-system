@@ -1,44 +1,43 @@
 ---
-- name: initialize k8s cluster using kubeadm
-  shell: | 
+- name: Initialize k8s cluster using kubeadm
+  ansible.builtin.shell: |
     kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/16"
-    touch "{{ki_cluster}}"
+    touch "{{ ki_cluster }}"
   args:
-    creates: "{{ki_cluster}}"
+    creates: "{{ ki_cluster }}"
 
-- name: setup kubeconfig for main user
-  shell: | 
+- name: Setup kubeconfig for main user
+  ansible.builtin.shell: |
     mkdir -p /home/kwkaiser/.kube
     cp -i /etc/kubernetes/admin.conf /home/kwkaiser/.kube/config
     chown kwkaiser:kwkaiser /home/kwkaiser/.kube/config
   args:
     creates: /home/kwkaiser/.kube
 
-- name: install calico pod network
+- name: Install calico pod network
   become_user: kwkaiser
-  shell: | 
-    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml 
-    touch "{{ki_network_add}}"
+  ansible.builtin.shell: |
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
+    touch "{{ ki_network_add }}"
   args:
-    creates: "{{ki_network_add}}"
+    creates: "{{ ki_network_add }}"
 
-
-- name: create calico as resource
+- name: Create calico as resource
   become_user: kwkaiser
-  shell: | 
-    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml 
-    touch "{{ki_network_create}}"
+  ansible.builtin.shell: |
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
+    touch "{{ ki_network_create }}"
   args:
-    creates: "{{ki_network_create}}"
+    creates: "{{ ki_network_create }}"
 
-- name: remove taint from head node
+- name: Remove taint from head node
   become_user: kwkaiser
-  shell: |
-    kubectl taint nodes --all node-role.kubernetes.io/control-plane- 
-    touch "{{ki_untaint}}"
+  ansible.builtin.shell: |
+    kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+    touch "{{ ki_untaint }}"
   args:
-    creates: "{{ki_untaint}}"
+    creates: "{{ ki_untaint }}"
 
-- name: register kube join command
-  command: kubeadm token create --print-join-command
+- name: Register kube join command
+  ansible.builtin.command: kubeadm token create --print-join-command
   register: kube_join_cluster_command
