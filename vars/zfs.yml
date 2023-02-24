@@ -1,5 +1,4 @@
 ---
-
 #########################
 # Functionality toggles #
 #########################
@@ -96,8 +95,8 @@ zfs_enable_auto_snapshots: true
 # Pools #
 #########
 
-zfs_pools: 
-  - name: bulk
+zfs_pools:
+  - name: bulk_pool
     action: create
     compression: lz4
     devices:
@@ -106,7 +105,7 @@ zfs_pools:
       - /dev/sdd
       - /dev/sde
     type: raidz3
-    state: present   
+    state: present
 
   # - name: SSD-TANK
   #   action: create
@@ -150,93 +149,96 @@ zfs_pools:
 # Volumes #
 ###########
 
-
+zfs_volumes:
+  - name: bulk_volume
+    pool: bulk_pool
+    state: present
 # Defines block-device volumes to manage
 # zfs_volumes: []
-  # - name: backups
-  #   pool: tank
-  #   # Defines if iscsitarget should serve volume... | on | off | or not defined
-  #   shareiscsi: on
-  #   # Defines volsize for block devices
-  #   volsize: 1G
-  #   lun: 0
-  #   allow:
-  #     - ALL
-  #   state: present
-  # - name: data
-  #   pool: tank
-  #   shareiscsi: on
-  #   volsize: 2G
-  #   lun: 1
-  #   allow:
-  #     # - 10.0.0.0/8
-  #     - 192.168.202.0/24
-  #   state: present
-  # - name: encrypted-vol
-  #   pool: tank
-  #   state: present
-  #   # The encryption algorithm to use, or just "on" to use the default one picked by ZFS.
-  #   encryption: on
-  #   # Where to lookup the key on the filesystem.  Prompt is not supported by this role.
-  #   keylocation: "file:///use/local/etc/zfs/keys/tank/encyrpted-vol"
-  #   # passphrase | hex | raw
-  #   keyformat: "hex"
-  #   volsize: 3G
+# - name: backups
+#   pool: tank
+#   # Defines if iscsitarget should serve volume... | on | off | or not defined
+#   shareiscsi: on
+#   # Defines volsize for block devices
+#   volsize: 1G
+#   lun: 0
+#   allow:
+#     - ALL
+#   state: present
+# - name: data
+#   pool: tank
+#   shareiscsi: on
+#   volsize: 2G
+#   lun: 1
+#   allow:
+#     # - 10.0.0.0/8
+#     - 192.168.202.0/24
+#   state: present
+# - name: encrypted-vol
+#   pool: tank
+#   state: present
+#   # The encryption algorithm to use, or just "on" to use the default one picked by ZFS.
+#   encryption: on
+#   # Where to lookup the key on the filesystem.  Prompt is not supported by this role.
+#   keylocation: "file:///use/local/etc/zfs/keys/tank/encyrpted-vol"
+#   # passphrase | hex | raw
+#   keyformat: "hex"
+#   volsize: 3G
 
 ###############
 # Filesystems #
 ###############
 
 # zfs_filesystems: []
-  # - name: nfs
-  #   pool: tank
-  #   atime: off
-  #   # on | off (default) | lzjb | gzip | gzip-1 | gzip-2 | gzip-3 | gzip-4 | gzip-5 | gzip-6 | gzip-7 | gzip-8 | gzip-9 | lz4 | zle
-  #   compression: lz4
-  #   # latency (default) | throughput
-  #   logbias: latency
-  #   # Define an alternate mountpoint
-  #   # mountpoint: /var/lib/docker
-  #   # all (default) | none | metadata
-  #   primarycache: all
-  #   quota: 3G
-  #   # Defines recordsize.. 16K | 32K | 64K | 128K (default) | and etc.
-  #   recordsize: 16K
-  #   sharenfs: on
-  #   # standard (default) | always | disabled    sync: disabled
-  #   # Controls whether the snapshots devices of zvol's are hidden or visible. hidden (default) | visible
-  #   snapdev: visible
-  #   # Controls whether the .zfs directory is hidden or visible in the root of the file system. hidden (default) | visible
-  #   snapdir: visible
-  #   state: present
-  # - name: Shares/Movies
-  #   compression: lz4
-  #   group: nogroup
-  #   mountpoint: /TANK/Shares/Movies
-  #   owner: nobody
-  #   pool: TANK
-  #   quota: none
-  #   sharesmb: true
-  #   smb_options:
-  #     browseable: "yes"
-  #     comment: ""
-  #     create_directory_mask: "0755"
-  #     create_mask: "0777"
-  #     guest_ok: "yes"
-  #     read_only: "no"
-  #     share_name: Movies
-  #     writable: "yes"
-  #   xattr: sa
-  #   acltype: posixacl
-  #   state: present
-  #   #standard (default) | always | disabled
-  #   sync: disabled
-  # - name: encrypted-fs
-  #   pool: tank
-  #   state: present
-  #   # The encryption algorithm to use, or just "on" to use the default one picked by ZFS.
-  #   encryption: aes-256-gcm
-  #   # Where to lookup the key on the filesystem.  Prompt is not supported by this role.
-  #   keylocation: "file:///use/local/etc/zfs/keys/tank/encyrpted-fs"
-  #   # passphrase | hex | raw
-  #   keyformat: "hex"  
+# - name: nfs
+#   pool: tank
+#   atime: off
+#   # on | off (default) | lzjb | gzip | gzip-1 | gzip-2 | gzip-3 | gzip-4 | gzip-5 | gzip-6 | gzip-7 | gzip-8 | gzip-9 | lz4 | zle
+#   compression: lz4
+#   # latency (default) | throughput
+#   logbias: latency
+#   # Define an alternate mountpoint
+#   # mountpoint: /var/lib/docker
+#   # all (default) | none | metadata
+#   primarycache: all
+#   quota: 3G
+#   # Defines recordsize.. 16K | 32K | 64K | 128K (default) | and etc.
+#   recordsize: 16K
+#   sharenfs: on
+#   # standard (default) | always | disabled    sync: disabled
+#   # Controls whether the snapshots devices of zvol's are hidden or visible. hidden (default) | visible
+#   snapdev: visible
+#   # Controls whether the .zfs directory is hidden or visible in the root of the file system. hidden (default) | visible
+#   snapdir: visible
+#   state: present
+# - name: Shares/Movies
+#   compression: lz4
+#   group: nogroup
+#   mountpoint: /TANK/Shares/Movies
+#   owner: nobody
+#   pool: TANK
+#   quota: none
+#   sharesmb: true
+#   smb_options:
+#     browseable: "yes"
+#     comment: ""
+#     create_directory_mask: "0755"
+#     create_mask: "0777"
+#     guest_ok: "yes"
+#     read_only: "no"
+#     share_name: Movies
+#     writable: "yes"
+#   xattr: sa
+#   acltype: posixacl
+#   state: present
+#   #standard (default) | always | disabled
+#   sync: disabled
+# - name: encrypted-fs
+#   pool: tank
+#   state: present
+#   # The encryption algorithm to use, or just "on" to use the default one picked by ZFS.
+#   encryption: aes-256-gcm
+#   # Where to lookup the key on the filesystem.  Prompt is not supported by this role.
+#   keylocation: "file:///use/local/etc/zfs/keys/tank/encyrpted-fs"
+#   # passphrase | hex | raw
+#   keyformat: "hex"
