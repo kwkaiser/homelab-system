@@ -15,14 +15,14 @@
   roles:
     - mrlesmithjr.zfs
 
-# - hosts: heads
-#   name: Setup kubernetes cluster head
-#   become: true
-#   roles:
-#     - kubed_head
+- hosts: heads
+  name: Setup kubernetes cluster head
+  become: true
+  roles:
+    - kubed_head
 
-# - hosts: nodes
-#   name: Setup kubernetes cluster nodes
-#   become: true
-#   roles:
-#     - kubed_node
+- hosts: nodes
+  name: Setup kubernetes cluster nodes
+  become: true
+  roles:
+    - kubed_node

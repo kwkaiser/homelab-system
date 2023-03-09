@@ -16,23 +16,32 @@ clean: vm-down
 # vms #
 #######
 
-.phony: vm-up vm-down
+.phony: vm-up vm-down ssh
 vm-up:
 	./scripts/vm-toggle.sh up
 
 vm-down:
 	./scripts/vm-toggle.sh down
 
+ssh:
+	ssh -o "StrictHostKeyChecking no" kwkaiser@192.168.58.68
+
 ###########
 # ansible #
 ###########
 
-.phony: install deploy redeploy
+.phony: install deploy redeploy k8s-config
 
 install:
 	./scripts/install-roles.sh	
 
 deploy: vm-up
-	ansible-playbook setup-lab.yml
+	ansible-playbook setup-lab.yml $(verbosity)
 
 redeploy: | clean deploy
+
+k8s-config:
+	rm -rf $$HOME/.kube/config
+	mkdir -p $$HOME/.kube
+	ansible homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/home/kwkaiser/.kube/config flat=true'
+	chmod 600 $$HOME/.kube/config

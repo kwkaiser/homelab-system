@@ -81,9 +81,37 @@
     from_port: 30000
     to_port: 32767
 
+- name: Enable masquerading in ufw
+  ansible.builtin.lineinfile:
+    dest: /etc/default/ufw
+    regexp: "^DEFAULT_FORWARD_POLICY"
+    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
+    state: present
+
+- name: Restart ufw
+  ansible.builtin.systemd:
+    name: ufw
+    daemon_reload: true
+    state: restarted
+
+# - name: Add apt key for k8s
+#   command: curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#   args:
+#     creates: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+# - name: Add apt key for k8s
+#   ansible.builtin.apt_key:
+#     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#     state: present
+
+- name: Copy over google keyring
+  ansible.builtin.copy:
+    src: google-key.gpg
+    dest: /tmp/google-key.gpg
+
 - name: Add apt key for k8s
   ansible.builtin.apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    file: /tmp/google-key.gpg
     state: present
 
 - name: Add repo for k8s
@@ -114,3 +142,17 @@
     daemon_reload: true
     enabled: true
     state: restarted
+
+- name: Make sure flannel env is created
+  ansible.builtin.file:
+    state: directory
+    recurse: yes
+    path: /run/flannel/
+# - name: Copy over flannel config
+#   ansible.builtin.copy:
+#     dest: /run/flannel/subnet.env
+#     content: |
+#       FLANNEL_NETWORK=10.244.0.0/16
+#       FLANNEL_SUBNET=10.244.0.1/24
+#       FLANNEL_MTU=1450
+#       FLANNEL_IPMASQ=true
