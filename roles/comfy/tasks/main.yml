@@ -10,6 +10,13 @@
       - vim
       - jq
 
+- name: Install yq via curl
+  ansible.builtin.shell: |
+    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq 
+    chmod +x /usr/bin/yq
+  args:
+    creates: /usr/bin/yq
+
 - name: Install networking utils
   ansible.builtin.apt:
     state: present
