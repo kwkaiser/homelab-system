@@ -11,7 +11,7 @@ do
   if [[ "$installed_roles" != *"$line"* ]];
   then 
     echo "performing install"
-    ansible-galaxy role install "$(cat galaxy/roles.txt)"
+    ansible-galaxy role install "$line"
     exit 0
   fi
 done < galaxy/roles.txt

@@ -35,30 +35,6 @@
   args:
     creates: "{{ kube_init }}/cleaned.yaml"
 
-# - name: Install calico pod network
-#   become_user: kwkaiser
-#   ansible.builtin.shell: |
-#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
-#     touch "{{ ki_network_add }}"
-#   args:
-#     creates: "{{ ki_network_add }}"
-
-# - name: Install calico pod network
-#   become_user: kwkaiser
-#   ansible.builtin.shell: |
-#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
-#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
-#     touch "{{ ki_network_add }}"
-#   args:
-#     creates: "{{ ki_network_add }}"
-# - name: Create calico as resource
-#   become_user: kwkaiser
-#   ansible.builtin.shell: |
-#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
-#     touch "{{ ki_network_create }}"
-#   args:
-#     creates: "{{ ki_network_create }}"
-
 # - name: Remove taint from head node
 #   become_user: kwkaiser
 #   ansible.builtin.shell: |

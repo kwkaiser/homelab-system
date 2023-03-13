@@ -1,1 +1,4 @@
 mrlesmithjr.zfs
+geerlingguy.docker
+geerlingguy.containerd
+geerlingguy.kubernetes

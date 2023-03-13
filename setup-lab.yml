@@ -4,8 +4,9 @@
   become: true
   roles:
     - knows_me
-    - hardened
+    # - hardened
     - comfy
+    - geerlingguy.containerd
     - kubed
 
 # - hosts: homelab-mainarray
@@ -20,10 +21,14 @@
   name: Setup kubernetes cluster head
   become: true
   roles:
-    - kubed_head
+    - geerlingguy.kubernetes
+  vars:
+    kubernetes_role: "control_plane"
 
 - hosts: nodes
   name: Setup kubernetes cluster nodes
   become: true
   roles:
-    - kubed_node
+    - geerlingguy.kubernetes
+  vars:
+    kubernetes_role: "node" 
