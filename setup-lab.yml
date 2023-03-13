@@ -24,6 +24,10 @@
     - geerlingguy.kubernetes
   vars:
     kubernetes_role: "control_plane"
+    kubernetes_config_init_configuration:
+      localAPIEndpoint:
+        advertiseAddress: "{{ ansible_host }}"
+    kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
 
 - hosts: nodes
   name: Setup kubernetes cluster nodes
@@ -32,3 +36,5 @@
     - geerlingguy.kubernetes
   vars:
     kubernetes_role: "node" 
+    kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
+

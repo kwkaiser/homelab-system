@@ -43,5 +43,5 @@ redeploy: | clean deploy
 k8s-config:
 	rm -rf $$HOME/.kube/config
 	mkdir -p $$HOME/.kube
-	ansible homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/home/kwkaiser/.kube/config flat=true'
+	ansible homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/root/.kube/config flat=true'
 	chmod 600 $$HOME/.kube/config
