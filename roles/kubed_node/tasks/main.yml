@@ -1,5 +1,0 @@
----
-- name: Join cluster
-  ansible.builtin.shell: "{{ hostvars['homelab-thinkcentre']['kube_join_cluster_command']['stdout'] }} && touch {{ ki_joined }}"
-  args:
-    creates: "{{ ki_joined }}"

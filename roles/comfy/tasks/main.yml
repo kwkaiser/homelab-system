@@ -5,8 +5,8 @@
     update_cache: true
     name:
       - htop
-      # - fzf
-      # - tldr
+      - fzf
+      - tldr
       - vim
       - jq
 
