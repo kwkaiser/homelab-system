@@ -1,11 +1,3 @@
 - name: Restart ufw
-  listen: ufw-masq
-  ansible.builtin.systemd:
-    name: ufw
-    daemon_reload: true
-    state: restarted
-
-- name: K8s port (node port services)
-  listen: ufw-masq
   community.general.ufw:
     state: reloaded

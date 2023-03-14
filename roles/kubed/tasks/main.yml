@@ -67,4 +67,14 @@
     regexp: "^DEFAULT_FORWARD_POLICY"
     line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
     state: present
-  notify: ufw-masq
+  notify: Restart ufw
+
+- name: Syctl set ipv4 forwarding to 1
+  command: sysctl -w net.ipv4.ip_forward=1
+  notify: Restart ufw
+
+- name: Modprobe br_netfilter
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+  notify: Restart ufw

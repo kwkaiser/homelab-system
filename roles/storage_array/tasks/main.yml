@@ -18,8 +18,8 @@
   ansible.builtin.copy:
     dest: /etc/exports
     content: |
-      /bulk-pool/nfs *(rw,sync,no_subtree_check) 
-      /cache-pool/nfs *(rw,sync,no_subtree_check)
+      /bulk-pool/nfs *(rw,sync,no_root_squash,no_subtree_check) 
+      /cache-pool/nfs *(rw,sync,no_root_squash,no_subtree_check)
   notify: Restart NFS
 
 - name: NFS port
