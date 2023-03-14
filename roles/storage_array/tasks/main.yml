@@ -1,0 +1,29 @@
+---
+- name: Install nfs kernel server
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name:
+      - nfs-kernel-server
+      - nfs-common
+
+- name: Modify ownership of nfs share
+  ansible.builtin.file:
+    path: /bulk-pool/nfs
+    state: directory
+    owner: nobody
+    group: nogroup
+
+- name: Allow anyone to connect via NFS
+  ansible.builtin.copy:
+    dest: /etc/exports
+    content: |
+      /bulk-pool/nfs *(rw,sync,no_subtree_check) 
+      /cache-pool/nfs *(rw,sync,no_subtree_check)
+  notify: Restart NFS
+
+- name: NFS port
+  community.general.ufw:
+    comment: NFS port
+    rule: allow
+    port: 2049

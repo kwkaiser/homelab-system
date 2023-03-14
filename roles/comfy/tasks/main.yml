@@ -9,6 +9,7 @@
       - tldr
       - vim
       - jq
+      - nfs-common
 
 - name: Install yq via curl
   ansible.builtin.shell: |

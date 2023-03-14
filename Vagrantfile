@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
     sys.vm.disk :disk, size: "1GB", name: "c"
     sys.vm.disk :disk, size: "1GB", name: "d"
     sys.vm.disk :disk, size: "1GB", name: "e"
+    sys.vm.disk :disk, size: "1GB", name: "f"
   end
 
   # config.vm.provision "ansible" do |ansible|

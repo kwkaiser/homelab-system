@@ -9,32 +9,33 @@
     - geerlingguy.containerd
     - kubed
 
-# - hosts: homelab-mainarray
-#   name: Setup zfs on storage array
+- hosts: homelab-mainarray
+  name: Setup zfs on storage array
+  become: true
+  vars_files:
+    - zfs.yml
+  roles:
+    - mrlesmithjr.zfs
+    - storage_array
+
+# - hosts: heads
+#   name: Setup kubernetes cluster head
 #   become: true
-#   vars_files:
-#     - zfs.yml
 #   roles:
-#     - mrlesmithjr.zfs
+#     - geerlingguy.kubernetes
+#   vars:
+#     kubernetes_role: "control_plane"
+#     kubernetes_config_init_configuration:
+#       localAPIEndpoint:
+#         advertiseAddress: "{{ ansible_host }}"
+#     kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
 
-- hosts: heads
-  name: Setup kubernetes cluster head
-  become: true
-  roles:
-    - geerlingguy.kubernetes
-  vars:
-    kubernetes_role: "control_plane"
-    kubernetes_config_init_configuration:
-      localAPIEndpoint:
-        advertiseAddress: "{{ ansible_host }}"
-    kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
-
-- hosts: nodes
-  name: Setup kubernetes cluster nodes
-  become: true
-  roles:
-    - geerlingguy.kubernetes
-  vars:
-    kubernetes_role: "node" 
-    kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
+# - hosts: nodes
+#   name: Setup kubernetes cluster nodes
+#   become: true
+#   roles:
+#     - geerlingguy.kubernetes
+#   vars:
+#     kubernetes_role: "node" 
+#     kubernetes_kubelet_extra_args: "--node-ip={{ ansible_host }}"
 

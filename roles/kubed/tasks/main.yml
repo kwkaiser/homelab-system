@@ -11,13 +11,6 @@
   ansible.builtin.command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
-- name: Enable masquerading in ufw
-  ansible.builtin.lineinfile:
-    dest: /etc/default/ufw
-    regexp: "^DEFAULT_FORWARD_POLICY"
-    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
-    state: present
-
 - name: K8s port (api server)
   community.general.ufw:
     comment: k8s port (api server)
@@ -68,12 +61,10 @@
     from_port: 30000
     to_port: 32767
 
-- name: Restart ufw
-  ansible.builtin.systemd:
-    name: ufw
-    daemon_reload: true
-    state: restarted
-
-- name: K8s port (node port services)
-  community.general.ufw:
-    state: reloaded
+- name: Enable masquerading in ufw
+  ansible.builtin.lineinfile:
+    dest: /etc/default/ufw
+    regexp: "^DEFAULT_FORWARD_POLICY"
+    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
+    state: present
+  notify: ufw-masq

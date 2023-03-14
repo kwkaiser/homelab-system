@@ -96,7 +96,7 @@ zfs_enable_auto_snapshots: true
 #########
 
 zfs_pools:
-  - name: bulk_pool
+  - name: bulk-pool
     action: create
     compression: lz4
     devices:
@@ -105,6 +105,14 @@ zfs_pools:
       - /dev/sdd
       - /dev/sde
     type: raidz3
+    state: present
+
+  - name: cache-pool
+    action: create
+    compression: lz4
+    devices:
+      - /dev/sdf
+    type: basic
     state: present
 
   # - name: SSD-TANK
@@ -150,8 +158,11 @@ zfs_pools:
 ###########
 
 zfs_volumes:
-  - name: bulk_volume
-    pool: bulk_pool
+  - name: nfs
+    pool: bulk-pool
+    state: present
+  - name: nfs
+    pool: cache-pool
     state: present
 # Defines block-device volumes to manage
 # zfs_volumes: []

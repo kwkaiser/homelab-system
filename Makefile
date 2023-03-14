@@ -30,7 +30,7 @@ ssh:
 # ansible #
 ###########
 
-.phony: install deploy redeploy k8s-config
+.phony: install deploy redeploy k8s-config k8s-dns k8s
 
 install:
 	./scripts/install-roles.sh	
@@ -40,8 +40,13 @@ deploy: vm-up
 
 redeploy: | clean deploy
 
+k8s: k8s-config k8s-dns
+
 k8s-config:
 	rm -rf $$HOME/.kube/config
 	mkdir -p $$HOME/.kube
 	ansible homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/root/.kube/config flat=true'
 	chmod 600 $$HOME/.kube/config
+
+k8s-dns:
+	kubectl rollout restart deployment/coredns -n kube-system
