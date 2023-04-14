@@ -50,3 +50,12 @@ k8s-config:
 
 k8s-dns:
 	kubectl rollout restart deployment/coredns -n kube-system
+
+############
+# cleaning #
+############
+
+.phony: clean-pg
+
+clean-pg:
+	ansible homelab-mainarray -b -m shell -a 'rm -rf /bulk-pool/nfs/application/postgres/*'
