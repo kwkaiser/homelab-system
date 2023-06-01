@@ -11,6 +11,18 @@
   ansible.builtin.command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
+- name: HTTP traffic
+  community.general.ufw:
+    comment: http
+    rule: allow
+    port: 80
+
+- name: HTTPS traffic
+  community.general.ufw:
+    comment: https
+    rule: allow
+    port: 443
+
 - name: K8s port (api server)
   community.general.ufw:
     comment: k8s port (api server)

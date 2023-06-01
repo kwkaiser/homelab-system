@@ -15,13 +15,15 @@ Vagrant.configure("2") do |config|
   config.vm.define "homelab-thinkcentre" do |sys|
     sys.vm.hostname = "homelab-thinkcentre"
     sys.vm.network :private_network, ip: "192.168.56.68"
-    sys.vm.network :forwarded_port, guest: 30000, host: 6880
+    sys.vm.network :forwarded_port, guest: 30080, host: 6880
+    sys.vm.network :forwarded_port, guest: 30443, host: 6840
   end
 
   config.vm.define "homelab-mainarray" do |sys|
     sys.vm.hostname = "homelab-mainarray"
     sys.vm.network :private_network, ip: "192.168.56.69"
-    sys.vm.network :forwarded_port, guest: 30000, host: 6980
+    sys.vm.network :forwarded_port, guest: 30080, host: 6980
+    sys.vm.network :forwarded_port, guest: 30443, host: 6940
     sys.vm.disk :disk, size: "1GB", name: "b"
     sys.vm.disk :disk, size: "1GB", name: "c"
     sys.vm.disk :disk, size: "1GB", name: "d"
