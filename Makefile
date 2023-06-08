@@ -57,5 +57,5 @@ k8s-dns:
 
 .phony: clean-pg
 
-clean-pg:
-	ansible homelab-mainarray -b -m shell -a 'rm -rf /bulk-pool/nfs/application/postgres/*'
+clean-app:
+	ansible homelab-mainarray -b -m shell -a 'rm -rf /bulk-pool/nfs/application/*'

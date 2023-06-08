@@ -24,6 +24,12 @@
     state: present
     validate: "visudo -cf %s"
 
+- name: Install wireguard
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name: wireguard
+
 - name: Install fail2ban
   ansible.builtin.apt:
     state: present
