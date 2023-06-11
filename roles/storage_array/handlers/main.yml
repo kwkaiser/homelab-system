@@ -1,5 +1,5 @@
 - name: Restart NFS
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     enabled: true
     state: restarted
     name: nfs-kernel-server

@@ -1,8 +1,7 @@
 # Ensure that hosts have required commonly used CLI utils
 - name: Install cli utils
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
-    update_cache: true
     name:
       - htop
       - fzf
@@ -19,24 +18,20 @@
     creates: /usr/bin/yq
 
 - name: Install networking utils
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
-    update_cache: true
     name:
       - curl
 
 - name: Install additional ansible utils
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
+  ansible.builtin.package:
     name:
       - python3-netaddr
       - acl
 
 - name: Install system utils
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
-    update_cache: true
     name:
       - gnupg
       - ca-certificates

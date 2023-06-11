@@ -1,6 +1,6 @@
 ---
 - name: Install nfs kernel server
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
     update_cache: true
     name:

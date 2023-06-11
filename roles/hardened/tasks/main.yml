@@ -24,27 +24,19 @@
     state: present
     validate: "visudo -cf %s"
 
-- name: Install wireguard
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    name: wireguard
-
 - name: Install fail2ban
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
-    update_cache: true
     name: fail2ban
 
 - name: Enable fail2ban
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: fail2ban
-    daemon_reload: true
     enabled: true
     state: started
 
 - name: Install ufw
-  ansible.builtin.apt:
+  ansible.builtin.package:
     state: present
     update_cache: true
     name: ufw
@@ -55,10 +47,9 @@
     rule: allow
     port: 22
 
-- name: Enable ufw (systemd)
-  ansible.builtin.systemd:
+- name: Enable ufw (svc)
+  ansible.builtin.service:
     name: ufw
-    daemon_reload: true
     enabled: true
     state: started
 

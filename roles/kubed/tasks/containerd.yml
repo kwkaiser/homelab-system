@@ -1,0 +1,45 @@
+---
+- name: Ensure dependencies are installed.
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg2
+    state: present
+
+- name: Add Docker apt key.
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+  register: add_repository_key
+
+- name: Add Docker repository.
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    state: present
+    update_cache: true
+
+- name: Ensure containerd config directory exists.
+  ansible.builtin.file:
+    path: /etc/containerd
+    state: directory
+  register: containerd_dir
+
+- name: Copy containerd config.toml
+  ansible.builtin.copy:
+    force: true
+    mode: "0755"
+    src: containerd.toml
+    dest: /etc/containerd/config.toml
+
+- name: Install containerd
+  ansible.builtin.apt:
+    name: containerd.io
+    state: present
+
+- name: Enable & restart containerd
+  ansible.builtin.service:
+    name: containerd
+    state: restarted
+    enabled: true

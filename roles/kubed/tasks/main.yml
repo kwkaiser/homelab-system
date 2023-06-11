@@ -1,92 +1,15 @@
 ---
-- name: Remove swapfile from /etc/fstap
-  ansible.posix.mount:
-    fstype: swap
-    state: absent
-    name:
-      - swap
-      - none
+- name: System k8s configs
+  ansible.builtin.include_tasks: sys.yml
 
-- name: Disable swap
-  ansible.builtin.command: swapoff -a
-  when: ansible_swaptotal_mb > 0
+- name: Firewall k8s configs
+  ansible.builtin.include_tasks: firewall.yml
 
-- name: HTTP traffic
-  community.general.ufw:
-    comment: http
-    rule: allow
-    port: 80
+- name: Sysctl k8s configs
+  ansible.builtin.include_tasks: sysctl.yml
 
-- name: HTTPS traffic
-  community.general.ufw:
-    comment: https
-    rule: allow
-    port: 443
+- name: Containerd k8s configs
+  ansible.builtin.include_tasks: containerd.yml
 
-- name: K8s port (api server)
-  community.general.ufw:
-    comment: k8s port (api server)
-    rule: allow
-    port: 6443
-
-- name: K8s port (kubectl)
-  community.general.ufw:
-    comment: k8s port (kubectl)
-    rule: allow
-    port: 8080
-
-- name: K8s port (health check)
-  community.general.ufw:
-    comment: k8s port (health check)
-    rule: allow
-    port: 10248
-
-- name: K8s port (etcd server api)
-  community.general.ufw:
-    comment: k8s port (etcd server api)
-    rule: allow
-    from_port: 2379
-    to_port: 2380
-
-- name: K8s port (kubelet api)
-  community.general.ufw:
-    comment: k8s port (kubelet api)
-    rule: allow
-    port: 10250
-
-- name: K8s port (kube scheduler)
-  community.general.ufw:
-    comment: k8s port (kube scheduler)
-    rule: allow
-    port: 10259
-
-- name: K8s port (kube controller)
-  community.general.ufw:
-    comment: k8s port (kube controller)
-    rule: allow
-    port: 10257
-
-- name: K8s port (node port services)
-  community.general.ufw:
-    comment: k8s port (node port services)
-    rule: allow
-    from_port: 30000
-    to_port: 32767
-
-- name: Enable masquerading in ufw
-  ansible.builtin.lineinfile:
-    dest: /etc/default/ufw
-    regexp: "^DEFAULT_FORWARD_POLICY"
-    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
-    state: present
-  notify: Restart ufw
-
-- name: Syctl set ipv4 forwarding to 1
-  command: sysctl -w net.ipv4.ip_forward=1
-  notify: Restart ufw
-
-- name: Modprobe br_netfilter
-  community.general.modprobe:
-    name: br_netfilter
-    state: present
-  notify: Restart ufw
+- name: Kube k8s configs
+  ansible.builtin.include_tasks: kube.yml

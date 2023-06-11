@@ -1,5 +1,10 @@
 # Has my account & relevant details
 ---
+- name: Create sudo group
+  ansible.builtin.group:
+    name: sudo
+    state: present
+
 - name: Create main user
   ansible.builtin.user:
     name: kwkaiser
@@ -12,22 +17,15 @@
 
 - name: Create ssh dir if missing
   ansible.builtin.file:
-    dest: /home/kwkaiser/.ssh
     mode: "0700"
+    dest: /home/kwkaiser/.ssh
     state: directory
     owner: kwkaiser
     group: kwkaiser
 
-- name: Create keys dir if missing
-  ansible.builtin.file:
-    dest: /home/kwkaiser/.ssh/authorized_keys
+- name: Copy authorized keys
+  ansible.builtin.copy:
+    force: true
     mode: "0600"
-    state: touch
-    owner: kwkaiser
-    group: kwkaiser
-
-- name: Copy homelab ssh key content
-  ansible.builtin.lineinfile:
-    path: /home/kwkaiser/.ssh/authorized_keys
-    regexp: ".*"
-    line: "{{ box_pubkey }}\n"
+    src: authorized_keys
+    dest: /home/kwkaiser/.ssh/authorized_keys
