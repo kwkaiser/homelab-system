@@ -1,3 +1,22 @@
 ---
-- name: Create cluster with kubeadm
-  ansible.builtin.shell: kubeadm init --apiserver-advertise-address="{{ ansible_host }}" --apiserver-cert-extra-sans="{{ ansible_host }}" --node-name "{{ ansible_hostname }}" --pod-network-cidr="{{ ansible_host.split('.')[:-1] | join('.') }}.0/16"
+- name: Control plane setup
+  ansible.builtin.include_tasks: init.yml
+
+- name: Config setup
+  ansible.builtin.include_tasks: config.yml
+
+- name: Network setup
+  ansible.builtin.include_tasks: network.yml
+
+- name: Taint config
+  ansible.builtin.include_tasks: taint.yml
+
+- name: Register kubernetes join command
+  ansible.builtin.command: kubeadm token create --print-join-command
+  changed_when: false
+  register: kubernetes_join_command_output
+
+- name: Globally set join command
+  ansible.builtin.set_fact:
+    kubernetes_join_command: "{{ kubernetes_join_command_output.stdout }}"
+  when: kubernetes_join_command_output.stdout is defined

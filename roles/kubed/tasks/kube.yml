@@ -1,16 +1,4 @@
 ---
-- name: Add Kubernetes apt key.
-  ansible.builtin.apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
-  register: add_repository_key
-
-- name: Add Kubernetes repository.
-  ansible.builtin.apt_repository:
-    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
-    update_cache: true
-
 - name: Install k8s packages
   ansible.builtin.package:
     name:

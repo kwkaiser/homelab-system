@@ -21,3 +21,9 @@
   become: true
   roles:
     - kubed_head
+
+- hosts: homelab-mainarray
+  name: Setup kubernetes nodes
+  become: true
+  roles:
+    - kubed_node

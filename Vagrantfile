@@ -19,19 +19,19 @@ Vagrant.configure("2") do |config|
     sys.vm.network :forwarded_port, guest: 30443, host: 6840
   end
 
-  # config.vm.define "homelab-mainarray" do |sys|
-  #   sys.vm.hostname = "homelab-mainarray"
-  #   sys.vm.network :private_network, ip: "192.168.56.69"
-  #   sys.vm.network :forwarded_port, guest: 30080, host: 6980
-  #   sys.vm.network :forwarded_port, guest: 30443, host: 6940
-  #   sys.vm.disk :disk, size: "1GB", name: "b"
-  #   sys.vm.disk :disk, size: "1GB", name: "c"
-  #   sys.vm.disk :disk, size: "1GB", name: "d"
-  #   sys.vm.disk :disk, size: "1GB", name: "e"
-  #   sys.vm.disk :disk, size: "1GB", name: "f"
-  # end
+  config.vm.define "homelab-mainarray" do |sys|
+    sys.vm.hostname = "homelab-mainarray"
+    sys.vm.network :private_network, ip: "192.168.56.69"
+    sys.vm.network :forwarded_port, guest: 30080, host: 6980
+    sys.vm.network :forwarded_port, guest: 30443, host: 6940
+    sys.vm.disk :disk, size: "1GB", name: "b"
+    sys.vm.disk :disk, size: "1GB", name: "c"
+    sys.vm.disk :disk, size: "1GB", name: "d"
+    sys.vm.disk :disk, size: "1GB", name: "e"
+    sys.vm.disk :disk, size: "1GB", name: "f"
+  end
 
-  # config.vm.provision "ansible" do |ansible|
-  #     ansible.playbook = "setup-lab.yml"
-  # end
+  config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "setup-lab.yml"
+  end
 end

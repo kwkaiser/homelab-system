@@ -8,6 +8,9 @@
 - name: Sysctl k8s configs
   ansible.builtin.include_tasks: sysctl.yml
 
+- name: Add apt repos
+  ansible.builtin.include_tasks: apt.yml
+
 - name: Containerd k8s configs
   ansible.builtin.include_tasks: containerd.yml
 
