@@ -1,22 +1,27 @@
 ---
-- name: Control plane setup
-  ansible.builtin.include_tasks: init.yml
+- name: Setup head
+  ansible.builtin.include_tasks: foo.yml
+# - name: Control plane setup
+#   ansible.builtin.include_tasks: init.yml
 
-- name: Config setup
-  ansible.builtin.include_tasks: config.yml
+# - name: Config setup
+#   ansible.builtin.include_tasks: config.yml
 
-- name: Network setup
-  ansible.builtin.include_tasks: network.yml
+# - name: Network setup
+#   ansible.builtin.include_tasks: network.yml
 
-- name: Taint config
-  ansible.builtin.include_tasks: taint.yml
+# # - name: Taint config
+# #   ansible.builtin.include_tasks: taint.yml
 
-- name: Register kubernetes join command
-  ansible.builtin.command: kubeadm token create --print-join-command
-  changed_when: false
-  register: kubernetes_join_command_output
+# - name: Register kubernetes join command
+#   ansible.builtin.command: kubeadm token create --print-join-command
+#   changed_when: false
+#   register: kubernetes_join_command_output
 
-- name: Globally set join command
-  ansible.builtin.set_fact:
-    kubernetes_join_command: "{{ kubernetes_join_command_output.stdout }}"
-  when: kubernetes_join_command_output.stdout is defined
+# - name: Globally set join command
+#   ansible.builtin.set_fact:
+#     kubernetes_join_command: "{{ kubernetes_join_command_output.stdout }}"
+#   when: kubernetes_join_command_output.stdout is defined
+#   delegate_to: "{{ item }}"
+#   delegate_facts: true
+#   with_items: "{{ groups['all'] }}"

@@ -6,6 +6,7 @@
     - comfy
     - knows_me
     - hardened
+    - kubed
 
 # - hosts: homelab-mainarray
 #   name: Setup zfs on storage array
@@ -22,8 +23,8 @@
   roles:
     - kubed_head
 
-- hosts: homelab-mainarray
-  name: Setup kubernetes nodes
-  become: true
-  roles:
-    - kubed_node
+# - hosts: homelab-mainarray
+#   name: Setup kubernetes nodes
+#   become: true
+#   roles:
+#     - kubed_node

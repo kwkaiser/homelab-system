@@ -1,5 +1,9 @@
 ---
-- name: Join node to Kubernetes control plane.
-  ansible.builtin.command: "{{ kubernetes_join_command }}"
-  args:
-    creates: /etc/kubernetes/kubelet.conf
+- name: foo
+  ansible.builtin.shell: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="agent --server https://192.168.56.6
+8:6443 --token K1002d95263a62fec9e981808829e2b9b611914b12ec56c4da1060f2032ecd3edbb::server:af726a83e9edbb93bcd761
+03ed318eec" sh -s -
+# - name: Join node to Kubernetes control plane.
+#   ansible.builtin.command: "{{ kubernetes_join_command }}"
+#   args:
+#     creates: /etc/kubernetes/kubelet.conf

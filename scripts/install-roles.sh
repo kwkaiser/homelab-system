@@ -10,7 +10,7 @@ while read -r line || [[ -n $line ]];
 do
   if [[ "$installed_roles" != *"$line"* ]];
   then 
-    echo "performing install"
+    echo "performing role install"
     ansible-galaxy role install "$line"
     exit 0
   fi

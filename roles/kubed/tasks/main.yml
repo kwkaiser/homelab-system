@@ -4,15 +4,14 @@
 
 - name: Firewall k8s configs
   ansible.builtin.include_tasks: firewall.yml
+# - name: Sysctl k8s configs
+#   ansible.builtin.include_tasks: sysctl.yml
 
-- name: Sysctl k8s configs
-  ansible.builtin.include_tasks: sysctl.yml
+# - name: Add apt repos
+#   ansible.builtin.include_tasks: apt.yml
 
-- name: Add apt repos
-  ansible.builtin.include_tasks: apt.yml
+# - name: Containerd k8s configs
+#   ansible.builtin.include_tasks: containerd.yml
 
-- name: Containerd k8s configs
-  ansible.builtin.include_tasks: containerd.yml
-
-- name: Kube k8s configs
-  ansible.builtin.include_tasks: kube.yml
+# - name: Kube k8s configs
+#   ansible.builtin.include_tasks: kube.yml
