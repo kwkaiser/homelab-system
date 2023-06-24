@@ -8,14 +8,14 @@
     - hardened
     - kubed
 
-# - hosts: homelab-mainarray
-#   name: Setup zfs on storage array
-#   become: true
-#   vars_files:
-#     - zfs.yml
-#   roles:
-#     - mrlesmithjr.zfs
-#     - storage_array
+- hosts: homelab-mainarray
+  name: Setup zfs on storage array
+  become: true
+  vars_files:
+    - zfs.yml
+  roles:
+    - mrlesmithjr.zfs
+    - storage_array
 
 - hosts: homelab-thinkcentre
   name: Setup kubernetes cluster head
@@ -23,8 +23,8 @@
   roles:
     - kubed_head
 
-# - hosts: homelab-mainarray
-#   name: Setup kubernetes nodes
-#   become: true
-#   roles:
-#     - kubed_node
+- hosts: homelab-mainarray
+  name: Setup kubernetes nodes
+  become: true
+  roles:
+    - kubed_node

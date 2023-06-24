@@ -1,3 +1,25 @@
 ---
-- name: Setup head
-  ansible.builtin.include_tasks: k3s.yml
+- name: Setup server
+  ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -s
+  environment:
+    INSTALL_K3S_EXEC: "server --node-external-ip {{ ansible_host }}"
+  args:
+    creates: /etc/rancher/k3s/k3s.yaml
+
+- name: Replace IP address
+  ansible.builtin.replace:
+    path: /etc/rancher/k3s/k3s.yaml
+    regexp: '127\.0\.0\.1:6443'
+    replace: "{{ ansible_host }}:6443"
+
+- name: Get node token
+  ansible.builtin.shell: cat /var/lib/rancher/k3s/server/node-token
+  register: token_output
+
+- name: Set join token
+  ansible.builtin.set_fact:
+    join_token: "{{ token_output.stdout }}"
+    join_server: "{{ ansible_host }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  with_items: "{{ groups['all'] }}"
