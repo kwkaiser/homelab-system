@@ -1,6 +1,6 @@
 ---
 - name: Join cluster
-  ansible.builtin.get_uri: https://get.k3s.io | sh -s -
+  ansible.builtin.shell: https://get.k3s.io | sh -s -
   environment:
     INSTALL_K3S_EXEC: "agent --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6"
     K3S_TOKEN: "{{ join_token }}"
