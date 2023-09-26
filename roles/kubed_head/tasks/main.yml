@@ -2,7 +2,7 @@
 - name: Setup server
   ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -s
   environment:
-    INSTALL_K3S_EXEC: "server --node-external-ip {{ ansible_host }}"
+    INSTALL_K3S_EXEC: "server --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6"
   args:
     creates: /etc/rancher/k3s/k3s.yaml
 
@@ -23,3 +23,6 @@
   delegate_to: "{{ item }}"
   delegate_facts: true
   with_items: "{{ groups['all'] }}"
+
+- name: Label head
+  ansible.builtin.shell: kubectl label nodes homelab-thinkcentre head=true
