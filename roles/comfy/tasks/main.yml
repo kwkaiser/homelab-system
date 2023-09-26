@@ -11,11 +11,10 @@
       - nfs-common
 
 - name: Install yq via curl
-  ansible.builtin.shell: |
-    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-    chmod +x /usr/bin/yq
-  args:
-    creates: /usr/bin/yq
+  ansible.builtin.get_url:
+    url: https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+    dest: /usr/bin/yq
+    mode: 'a+x'
 
 - name: Install networking utils
   ansible.builtin.package:

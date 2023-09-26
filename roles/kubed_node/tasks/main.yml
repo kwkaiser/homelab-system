@@ -1,7 +1,15 @@
 ---
-- name: Join cluster
-  ansible.builtin.shell: https://get.k3s.io | sh -s -
+- name: Download K3s script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    mode: 'a+x'
+    dest: /home/ansible/k3s.sh
+
+- name: Run K3s script
+  ansible.builtin.command: sh -s /home/ansible/k3s.sh
   environment:
     INSTALL_K3S_EXEC: "agent --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6"
     K3S_TOKEN: "{{ join_token }}"
     K3S_URL: "https://{{ join_server }}:6443"
+  args:
+    creates: /etc/rancher/k3s/k3s.yaml

@@ -1,6 +1,12 @@
 ---
+- name: Download K3s script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    mode: 'a+x'
+    dest: /home/ansible/k3s.sh
+
 - name: Setup server
-  ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -s
+  ansible.builtin.command: sh -s /home/ansible/k3s.sh
   environment:
     INSTALL_K3S_EXEC: "server --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6"
   args:
@@ -13,7 +19,7 @@
     replace: "{{ ansible_host }}:6443"
 
 - name: Get node token
-  ansible.builtin.shell: cat /var/lib/rancher/k3s/server/node-token
+  ansible.builtin.command: cat /var/lib/rancher/k3s/server/node-token
   register: token_output
 
 - name: Set join token
@@ -25,4 +31,4 @@
   with_items: "{{ groups['all'] }}"
 
 - name: Label head
-  ansible.builtin.shell: kubectl label nodes homelab-thinkcentre head=true
+  ansible.builtin.command: kubectl label nodes homelab-thinkcentre head=true

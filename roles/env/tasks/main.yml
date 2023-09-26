@@ -1,28 +1,28 @@
 ---
-- name: determine env from environment
-  command: "echo {{lookup('env', 'ANSIBLE_ENV')}}"
+- name: Determine env from environment
+  ansible.builtin.command: "echo {{ lookup('env', 'ANSIBLE_ENV') }}"
   register: env
 
-- name: determine env
-  set_fact:
+- name: Determine env
+  ansible.builtin.set_fact:
     dev: "{{ env is match('dev') }}"
     prod: "{{ env is match('prod') }}"
     test: "{{ env is match('test') }}"
 
-- name: print env
-  debug:
-    msg: "Using environment {{ env }}: (dev, {{dev}}), (test, {{test}}), (prod, {{prod}})"
+- name: Print env
+  ansible.builtin.debug:
+    msg: "Using environment {{ env }}: (dev, {{ dev }}), (test, {{ test }}), (prod, {{ prod }})"
 
-- name: set dev vars
+- name: Set dev vars
   when: dev|bool
-  set_fact:
+  ansible.builtin.set_fact:
     keepass_path: "{{ lookup('env', 'HOME') }}/documents/keys/keys.dbx"
 
-- name: set dev vars
+- name: Set dev vars
   when: prod or test
-  set_fact:
+  ansible.builtin.set_fact:
     keepass_path: "{{ playbook_dir }}/keys.dbx"
 
-- name: include secrets
+- name: Include secrets
   ansible.builtin.include_vars:
     file: devtest-secrets.yml
