@@ -3,7 +3,7 @@
   ansible.builtin.get_url:
     url: https://get.k3s.io
     mode: 'a+x'
-    dest: /home/ansible/k3s.sh
+    dest: /home/kwkaiser/k3s.sh
 
 - name: Run K3s script
   ansible.builtin.command: sh -s /home/ansible/k3s.sh
