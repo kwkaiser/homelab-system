@@ -14,7 +14,6 @@
   vars_files:
     - zfs.yml
   roles:
-    - mrlesmithjr.zfs
     - storage_array
 
 - hosts: homelab-thinkcentre

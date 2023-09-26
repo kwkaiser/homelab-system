@@ -1,4 +1,8 @@
 ---
+- name: Apply mrlesmithjr zfs role
+  ansible.builtin.include_role:
+    name: mrlesmithjr.zfs
+
 - name: Install nfs kernel server
   ansible.builtin.package:
     state: present
