@@ -8,7 +8,7 @@
 - name: Setup server
   ansible.builtin.command: sh /home/kwkaiser/k3s.sh
   environment:
-    INSTALL_K3S_EXEC: "server --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6"
+    INSTALL_K3S_EXEC: "server --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
   args:
     creates: /etc/rancher/k3s/k3s.yaml
 
