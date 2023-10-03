@@ -13,7 +13,7 @@
 
 - name: Modify ownership of nfs share
   ansible.builtin.file:
-    mode: '755'
+    mode: '0755'
     path: /bulk-pool/nfs
     state: directory
     owner: nobody
@@ -21,7 +21,7 @@
 
 - name: Allow anyone to connect via NFS
   ansible.builtin.copy:
-    mode: '755'
+    mode: '0755'
     dest: /etc/exports
     content: |
       /bulk-pool/nfs *(rw,sync,no_root_squash,no_subtree_check)

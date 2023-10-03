@@ -2,28 +2,34 @@
 - hosts: all
   name: Setup common utils shared on all
   become: true
+  vars_files:
+    - k3s.yml
   roles:
     - comfy
     - knows_me
     - hardened
     - kubed
 
-- hosts: homelab-mainarray
-  name: Setup zfs on storage array
-  become: true
-  vars_files:
-    - zfs.yml
-  roles:
-    - storage_array
+# - hosts: homelab-mainarray
+#   name: Setup zfs on storage array
+#   become: true
+#   vars_files:
+#     - zfs.yml
+#   roles:
+#     - storage_array
 
 - hosts: homelab-thinkcentre
   name: Setup kubernetes cluster head
   become: true
+  vars_files:
+    - k3s.yml
   roles:
     - kubed_head
 
 - hosts: homelab-mainarray
   name: Setup kubernetes nodes
   become: true
+  vars_files:
+    - k3s.yml
   roles:
     - kubed_node
