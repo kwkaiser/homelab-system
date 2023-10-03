@@ -1,3 +1,6 @@
 ---
 - name: Firewall k8s configs
   ansible.builtin.include_tasks: firewall.yml
+
+- name: Sysctl k8s configs
+  ansible.builtin.include_tasks: sysctl.yml

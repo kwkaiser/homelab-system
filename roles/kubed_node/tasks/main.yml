@@ -1,15 +1,30 @@
 ---
-- name: Download K3s script for node
-  ansible.builtin.get_url:
-    url: https://get.k3s.io
-    mode: 'a+x'
-    dest: /home/kwkaiser/k3s.sh
+# - name: Download K3s script for node
+#   ansible.builtin.get_url:
+#     url: https://get.k3s.io
+#     mode: 'a+x'
+#     dest: /home/kwkaiser/k3s.sh
 
-- name: Run K3s script
-  ansible.builtin.command: sh /home/kwkaiser/k3s.sh
-  environment:
-    INSTALL_K3S_EXEC: "agent --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
-    K3S_TOKEN: "{{ join_token }}"
-    K3S_URL: "https://{{ join_server }}:6443"
-  args:
-    creates: /etc/rancher/k3s/k3s.yaml
+# - name: Run K3s script
+#   ansible.builtin.command: sh /home/kwkaiser/k3s.sh
+#   environment:
+#     INSTALL_K3S_EXEC: "agent --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
+#     K3S_TOKEN: "{{ join_token }}"
+#     K3S_URL: "https://{{ join_server }}:6443"
+#   args:
+#     creates: /etc/rancher/k3s/k3s.yaml
+
+- name: Copy K3s service file
+  template:
+    src: "k3s.service.j2"
+    dest: "{{ systemd_dir }}/k3s-node.service"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Enable and check K3s service
+  systemd:
+    name: k3s-node
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
