@@ -69,7 +69,7 @@
 
 - name: Set join token
   ansible.builtin.set_fact:
-    join_token: "{{ node_token.content }}"
+    join_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
   delegate_to: "{{ item }}"
   delegate_facts: true
   with_items: "{{ groups['all'] }}"
@@ -91,6 +91,13 @@
     path: /etc/rancher/k3s/k3s.yaml
     regexp: '127\.0\.0\.1:6443'
     replace: "{{ ansible_host }}:6443"
+
+- name: Replace https://localhost:6443 by https://master-ip:6443
+  command: >-
+    k3s kubectl config set-cluster default
+      --server=https://{{ master_ip }}:6443
+      --kubeconfig ~{{ ansible_user }}/.kube/config
+  changed_when: true
 
 - name: Copy config file to user home directory
   ansible.builtin.copy:
