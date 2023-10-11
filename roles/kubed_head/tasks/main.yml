@@ -24,10 +24,6 @@
 #   delegate_to: "{{ item }}"
 #   delegate_facts: true
 #   with_items: "{{ groups['all'] }}"
-
-# - name: Label head
-#   ansible.builtin.command: kubectl label nodes homelab-thinkcentre head=true
-
 - name: Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
@@ -93,7 +89,7 @@
     replace: "{{ ansible_host }}:6443"
 
 - name: Replace https://localhost:6443 by https://master-ip:6443
-  command: >-
+  ansible.builtin.command: >-
     k3s kubectl config set-cluster default
       --server=https://{{ master_ip }}:6443
       --kubeconfig ~{{ ansible_user }}/.kube/config
@@ -118,3 +114,6 @@
     src: /usr/local/bin/k3s
     dest: /usr/local/bin/crictl
     state: link
+
+- name: Label head
+  ansible.builtin.command: kubectl label nodes homelab-thinkcentre head=true

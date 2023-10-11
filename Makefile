@@ -40,7 +40,7 @@ deploy: vm-up
 
 redeploy: | clean deploy
 
-k8s: k8s-config k8s-dns
+k8s: k8s-config 
 
 k8s-config:
 	rm -rf $$HOME/.kube/config

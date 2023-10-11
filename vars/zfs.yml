@@ -100,10 +100,10 @@ zfs_pools:
     action: create
     compression: lz4
     devices:
-      - /dev/sdb
-      - /dev/sdc
-      - /dev/sdd
-      - /dev/sde
+      - /dev/vdb
+      - /dev/vdc
+      - /dev/vdd
+      - /dev/vde
     type: raidz3
     state: present
 
@@ -111,7 +111,7 @@ zfs_pools:
     action: create
     compression: lz4
     devices:
-      - /dev/sdf
+      - /dev/vdf
     type: basic
     state: present
 

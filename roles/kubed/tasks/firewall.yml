@@ -63,7 +63,7 @@
 
 - name: Disable ufw
   community.general.ufw:
-    state: disabled 
+    state: disabled
 
 - name: Enable masquerading in ufw
   ansible.builtin.lineinfile:
