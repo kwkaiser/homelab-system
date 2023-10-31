@@ -1,4 +1,7 @@
 ---
+- name: Configure prometheus node exporter
+  ansible.builtin.include_tasks: prom.yml
+
 - name: Firewall k8s configs
   ansible.builtin.include_tasks: firewall.yml
 
