@@ -1,29 +1,4 @@
 ---
-# - name: Download K3s script for head
-#   ansible.builtin.get_url:
-#     url: https://get.k3s.io
-#     mode: 'a+x'
-#     dest: /home/kwkaiser/k3s.sh
-
-# - name: Setup server
-#   ansible.builtin.command: sh /home/kwkaiser/k3s.sh
-#   environment:
-#     INSTALL_K3S_EXEC: "server --node-ip {{ ansible_host }} --node-external-ip {{ ansible_host }} --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
-#   args:
-#     creates: /etc/rancher/k3s/k3s.yaml
-
-
-# - name: Get node token
-#   ansible.builtin.command: cat /var/lib/rancher/k3s/server/node-token
-#   register: token_output
-
-# - name: Set join token
-#   ansible.builtin.set_fact:
-#     join_token: "{{ token_output.stdout }}"
-#     join_server: "{{ ansible_host }}"
-#   delegate_to: "{{ item }}"
-#   delegate_facts: true
-#   with_items: "{{ groups['all'] }}"
 - name: Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
@@ -58,10 +33,6 @@
   ansible.builtin.slurp:
     path: "{{ k3s_server_location }}/server/node-token"
   register: node_token
-
-# - name: Store Master node-token
-#   ansible.builtin.set_fact:
-#     token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
 
 - name: Set join token
   ansible.builtin.set_fact:
@@ -116,4 +87,6 @@
     state: link
 
 - name: Label head
-  ansible.builtin.command: kubectl label nodes homelab-thinkcentre head=true
+  ansible.builtin.command: 
+    cmd: kubectl label nodes homelab-thinkcentre head=true
+    creates: /etc/systemd/system/k3s.service

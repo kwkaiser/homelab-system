@@ -36,7 +36,7 @@ install:
 	./scripts/install-roles.sh	
 
 deploy: vm-up
-	ansible-playbook setup-lab.yml $(verbosity) 
+	ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
 
 redeploy: | clean deploy
 
