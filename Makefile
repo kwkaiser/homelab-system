@@ -45,7 +45,7 @@ k8s: k8s-config
 k8s-config:
 	rm -rf $$HOME/.kube/config
 	mkdir -p $$HOME/.kube
-	ansible homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
+	ansible -i inv/dev homelab-thinkcentre -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
 	chmod 600 $$HOME/.kube/config
 
 k8s-dns:
