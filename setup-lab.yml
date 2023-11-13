@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars_files:
-    - k3s.yml
+    - ./vars/k3s.yml
   roles:
     - comfy
     - knows_me
@@ -14,7 +14,7 @@
   hosts: homelab-mainarray
   become: true
   vars_files:
-    - zfs.yml
+    - ./vars/zfs.yml
   roles:
     - storage_array
 
@@ -22,7 +22,7 @@
   hosts: homelab-thinkcentre
   become: true
   vars_files:
-    - k3s.yml
+    - ./vars/k3s.yml
   roles:
     - kubed_head
 
@@ -30,6 +30,6 @@
   hosts: homelab-mainarray
   become: true
   vars_files:
-    - k3s.yml
+    - ./vars/k3s.yml
   roles:
     - kubed_node
