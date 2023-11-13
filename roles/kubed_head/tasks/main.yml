@@ -89,4 +89,3 @@
 - name: Label head
   ansible.builtin.command: 
     cmd: kubectl label nodes homelab-thinkcentre head=true
-    creates: /etc/systemd/system/k3s.service
