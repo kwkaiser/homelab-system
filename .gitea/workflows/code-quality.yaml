@@ -13,7 +13,7 @@ jobs:
       - name: Install ansible
         run: |
           apt update
-          apt-get install ansible 
+          apt install ansible --assume-yes
 
       - name: Install ansible galaxy deps
         run: make install
