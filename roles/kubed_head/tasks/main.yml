@@ -87,5 +87,5 @@
     state: link
 
 - name: Label head
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd: kubectl label nodes homelab-thinkcentre head=true

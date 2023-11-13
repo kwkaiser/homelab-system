@@ -5,3 +5,6 @@ warn_list:
   - yaml[line-length]
   - deprecated-command-syntax
   - command-instead-of-module
+
+exclude_paths:
+  - .gitea/*
