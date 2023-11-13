@@ -44,4 +44,4 @@
 # Secrets #
 ###########
 
-box_pubkey: "{{ lookup('env', 'SUPER_SECRET') }}"
+foo: "{{ lookup('env', 'SUPER_SECRET') }}"

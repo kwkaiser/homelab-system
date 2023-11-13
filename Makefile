@@ -33,7 +33,7 @@ ssh:
 .phony: install deploy redeploy k8s-config k8s-dns k8s
 
 install:
-	./scripts/install-roles.sh	
+	./scripts/install-deps.sh
 
 deploy: vm-up
 	ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 

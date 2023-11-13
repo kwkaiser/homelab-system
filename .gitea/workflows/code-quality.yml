@@ -1,0 +1,22 @@
+name: Code qual subworkflow
+on:
+  workflow_call: 
+
+jobs:
+  code-quality:
+    name: Code quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install ansible
+        run: |
+          apt update
+          apt-get install ansible 
+
+      - name: Install ansible galaxy deps
+        run: make install
+
+      - name: Lint
+        run: ansible lint .
