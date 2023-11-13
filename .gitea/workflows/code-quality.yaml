@@ -14,9 +14,10 @@ jobs:
         run: |
           apt update
           apt install ansible --assume-yes
+          apt install ansible-lint --assume-yes
 
       - name: Install ansible galaxy deps
         run: make install
 
       - name: Lint
-        run: ansible-lint .
+        run: ansible-lint
