@@ -36,7 +36,6 @@ jobs:
 
           eval $(ssh-agent -s)
           echo "${ANSIBLE_KEY}" | ssh-add -
-          echo $(ssh-add -l)
-          # ansible-playbook -v -i inv/dev --check setup-lab.yml
+          ansible-playbook -v -i inv/dev --check setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
