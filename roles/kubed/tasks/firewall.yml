@@ -61,9 +61,9 @@
     from_port: 30000
     to_port: 32767
 
-- name: Disable ufw
+- name: Enable ufw
   community.general.ufw:
-    state: disabled
+    state: enabled
 
 - name: Enable masquerading in ufw
   ansible.builtin.lineinfile:
