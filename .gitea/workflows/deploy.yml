@@ -34,6 +34,7 @@ jobs:
           # echo $ANSIBLE_KEY > ~/.vagrant.d/insecure_private_key
           # chmod 0600 ~/.vagrant.d/insecure_private_key
 
+          eval $(ssh-agent -s)
           echo "${ANSIBLE_KEY}" | ssh-add -
           ssh-add -l
           # ansible-playbook -v -i inv/dev --check setup-lab.yml
