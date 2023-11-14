@@ -19,14 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install ansible
-        run: |
-          apt update
-          apt install ansible --assume-yes
-          apt install ansible-lint --assume-yes
+      # - name: Install ansible
+      #   run: |
+      #     apt update
+      #     apt install ansible --assume-yes
+      #     apt install ansible-lint --assume-yes
 
-      - name: Install galaxy deps
-        run: make install 
+      # - name: Install galaxy deps
+      #   run: make install 
 
       - name: Copy vagrant ssh key
         run: |
