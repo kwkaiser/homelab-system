@@ -32,8 +32,7 @@ jobs:
         run: |
           mkdir ~/.vagrant.d/
           echo $ANSIBLE_KEY > ~/.vagrant.d/insecure_private_key
-          echo $(cat ~/.vagrant.d/insecure_private_key)
-          # chmod 0600 ~/.vagrant.d/insecure_private_key
-          # ansible-playbook -i inv/dev --check setup-lab.yml
+          chmod 0600 ~/.vagrant.d/insecure_private_key
+          ansible-playbook -i inv/dev --check setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
