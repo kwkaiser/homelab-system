@@ -88,4 +88,4 @@
 
 - name: Label head
   ansible.builtin.command:
-    cmd: kubectl label nodes homelab-thinkcentre head=true
+    cmd: kubectl label nodes homelab-thinkcentre head=true --overwrite
