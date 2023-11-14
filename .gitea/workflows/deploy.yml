@@ -6,14 +6,14 @@ on:
       - main
 
 jobs:
-  # code-quality:
-  #   name: Check code quality
-  #   uses: ./.gitea/workflows/code-quality.yaml 
+  code-quality:
+    name: Check code quality
+    uses: ./.gitea/workflows/code-quality.yaml 
 
   
-  dry-run:
+  deploy:
     name: Perform dry run
-    # needs: code-quality
+    needs: code-quality
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout
@@ -28,14 +28,10 @@ jobs:
       - name: Install galaxy deps
         run: make install 
 
-      - name: Copy vagrant ssh key
+      - name: Run playbook
         run: |
-          # mkdir ~/.vagrant.d/
-          # echo $ANSIBLE_KEY > ~/.vagrant.d/insecure_private_key
-          # chmod 0600 ~/.vagrant.d/insecure_private_key
-
           eval $(ssh-agent -s)
           echo "${ANSIBLE_KEY}" | ssh-add -
-          ansible-playbook -i inv/dev --check setup-lab.yml
+          ansible-playbook -i inv/dev setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}

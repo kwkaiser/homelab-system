@@ -9,3 +9,28 @@ jobs:
   code-quality:
     name: Check code quality
     uses: ./.gitea/workflows/code-quality.yaml
+
+  dry-run:
+    name: Perform dry run
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install ansible
+        run: |
+          apt update
+          apt install ansible --assume-yes
+          apt install ansible-lint --assume-yes
+
+      - name: Install galaxy deps
+        run: make install 
+
+      - name: Run dry run of playbook
+        run: |
+          eval $(ssh-agent -s)
+          echo "${ANSIBLE_KEY}" | ssh-add -
+          ansible-playbook -i inv/dev --check setup-lab.yml
+        env:
+          ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
