@@ -30,9 +30,12 @@ jobs:
 
       - name: Copy vagrant ssh key
         run: |
-          mkdir ~/.vagrant.d/
-          echo $ANSIBLE_KEY > ~/.vagrant.d/insecure_private_key
-          chmod 0600 ~/.vagrant.d/insecure_private_key
-          ansible-playbook -v -i inv/dev --check setup-lab.yml
+          # mkdir ~/.vagrant.d/
+          # echo $ANSIBLE_KEY > ~/.vagrant.d/insecure_private_key
+          # chmod 0600 ~/.vagrant.d/insecure_private_key
+
+          echo "${ANSIBLE_KEY}" | ssh-add -
+          ssh-add -l
+          # ansible-playbook -v -i inv/dev --check setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
