@@ -1,3 +1,2 @@
 [hosts]
-homelab-thinkcentre ansible_host=192.168.1.68
-homelab-mainarray ansible_host=192.168.1.69
+homelab-mainarray ansible_host=192.168.1.68

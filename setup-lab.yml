@@ -18,18 +18,11 @@
   roles:
     - storage_array
 
-- name: Setup kubernetes cluster head
-  hosts: homelab-thinkcentre
-  become: true
-  vars_files:
-    - ./vars/k3s.yml
-  roles:
-    - kubed_head
-
-- name: Setup kubernetes nodes
+- name: Setup main array as head and node
   hosts: homelab-mainarray
   become: true
   vars_files:
     - ./vars/k3s.yml
   roles:
+    - kubed_head
     - kubed_node
