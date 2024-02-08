@@ -15,9 +15,6 @@ zfs_volumes:
   - name: nfs
     pool: bulk-pool
     state: present
-  - name: nfs
-    pool: cache-pool
-    state: present
 
 zfs_pools:
   - name: bulk-pool
@@ -29,14 +26,6 @@ zfs_pools:
       - /dev/vdd
       - /dev/vde
     type: raidz3
-    state: present
-
-  - name: cache-pool
-    action: create
-    compression: lz4
-    devices:
-      - /dev/vdf
-    type: basic
     state: present
 
 #######

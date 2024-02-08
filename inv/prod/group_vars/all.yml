@@ -1,44 +1,37 @@
+###########
+# Ansible #
+###########
+
+ansible_user: kwkaiser
+
 #######
 # ZFS #
 #######
 
-# ZFS functionality differing between dev, prod
+zfs_volumes:
+  - name: nfs
+    pool: bulk-pool
+    state: present
 
-# zfs_volumes:
-#   - name: nfs
-#     pool: bulk-pool
-#     state: present
-#   - name: nfs
-#     pool: cache-pool
-#     state: present
-
-# zfs_pools:
-#   - name: bulk-pool
-#     action: create
-#     compression: lz4
-#     devices:
-#       - /dev/vdb
-#       - /dev/vdc
-#       - /dev/vdd
-#       - /dev/vde
-#     type: raidz3
-#     state: present
-
-#   - name: cache-pool
-#     action: create
-#     compression: lz4
-#     devices:
-#       - /dev/vdf
-#     type: basic
-#     state: present
+zfs_pools:
+  - name: bulk-pool
+    action: create
+    compression: lz4
+    devices:
+      - /dev/sda
+      - /dev/sdb
+      - /dev/sdc
+      - /dev/sdd
+    type: raidz3
+    state: present
 
 #######
 # K3s #
 #######
 
-# master_ip: 192.168.1.68
-# extra_server_args: "--flannel-iface=eth1 --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
-# extra_agent_args: "--flannel-iface=eth1 --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
+master_ip: 192.168.2.103
+extra_server_args: "--flannel-iface=eth1 --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
+extra_agent_args: "--flannel-iface=eth1 --kubelet-arg=allowed-unsafe-sysctls=net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark,net.ipv6.conf.all.disable_ipv6,net.ipv4.ip_forward"
 
 ###########
 # Secrets #

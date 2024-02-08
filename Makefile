@@ -35,8 +35,11 @@ ssh:
 install:
 	./scripts/install-deps.sh
 
-deploy: vm-up
-	ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
+deploy-dev: vm-up
+	ANSIBLE_CONFIG=inv/dev/ansible.cfg ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
+
+deploy-prod:
+	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod -kK test.yml $(verbosity) 
 
 redeploy: | clean deploy
 
