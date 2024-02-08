@@ -20,9 +20,9 @@ zfs_pools:
     devices:
       - /dev/sda
       - /dev/sdb
-      - /dev/sdc
       - /dev/sdd
-    type: raidz3
+      - /dev/sdf
+    type: raidz2
     state: present
 
 #######

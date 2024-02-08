@@ -36,19 +36,17 @@ install:
 	./scripts/install-deps.sh
 
 deploy-dev: vm-up
-	ANSIBLE_CONFIG=inv/dev/ansible.cfg ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
+	ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
 
 deploy-prod:
-	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod setup-lab.yml $(verbosity) 
+	ansible-playbook -i inv/prod setup-lab.yml $(verbosity) 
 
 redeploy: | clean deploy
 
-k8s: k8s-config 
-
-k8s-config:
+k8s:
 	rm -rf $$HOME/.kube/config
 	mkdir -p $$HOME/.kube
-	ansible -i inv/dev mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
+	ansible -i inv/$(inv) mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
 	chmod 600 $$HOME/.kube/config
 
 k8s-dns:
