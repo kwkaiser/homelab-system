@@ -39,7 +39,7 @@ deploy-dev: vm-up
 	ANSIBLE_CONFIG=inv/dev/ansible.cfg ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
 
 deploy-prod:
-	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod --check --diff setup-lab.yml $(verbosity) 
+	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod --check setup-lab.yml $(verbosity) 
 
 redeploy: | clean deploy
 
