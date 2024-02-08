@@ -1,2 +1,2 @@
 [hosts]
-homelab-mainarray ansible_host=192.168.1.68
+mainarray ansible_host=192.168.1.68

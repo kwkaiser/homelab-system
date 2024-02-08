@@ -18,15 +18,15 @@ Vagrant.configure("2") do |config|
     # v.linked_clone = true
   end
 
-  config.vm.define "homelab-mainarray" do |sys|
-    sys.vm.hostname = "homelab-mainarray"
+  config.vm.define "mainarray" do |sys|
+    sys.vm.hostname = "mainarray"
     sys.vm.network :private_network, ip: "192.168.1.68", netmask: "255.255.255.0"
     sys.vm.network :forwarded_port, guest: 30080, host: 6880
     sys.vm.network :forwarded_port, guest: 30443, host: 6840
   end
 
-  # config.vm.define "homelab-mainarray" do |sys|
-  #   sys.vm.hostname = "homelab-mainarray"
+  # config.vm.define "mainarray" do |sys|
+  #   sys.vm.hostname = "mainarray"
   #   sys.vm.network :private_network, ip: "192.168.1.69", netmask: "255.255.255.0"
   #   sys.vm.network :forwarded_port, guest: 30080, host: 6980
   #   sys.vm.network :forwarded_port, guest: 30443, host: 6940

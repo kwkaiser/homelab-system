@@ -11,7 +11,7 @@
     - kubed
 
 - name: Setup zfs on storage array
-  hosts: homelab-mainarray
+  hosts: mainarray
   become: true
   vars_files:
     - ./vars/zfs.yml
@@ -19,7 +19,7 @@
     - storage_array
 
 - name: Setup main array as head
-  hosts: homelab-mainarray
+  hosts: mainarray
   become: true
   vars_files:
     - ./vars/k3s.yml

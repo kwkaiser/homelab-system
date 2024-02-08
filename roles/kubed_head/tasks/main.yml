@@ -88,4 +88,4 @@
 
 - name: Label head
   ansible.builtin.command:
-    cmd: kubectl label nodes homelab-mainarray head=true --overwrite
+    cmd: kubectl label nodes mainarray head=true --overwrite

@@ -39,7 +39,7 @@ deploy-dev: vm-up
 	ANSIBLE_CONFIG=inv/dev/ansible.cfg ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
 
 deploy-prod:
-	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod -kK test.yml $(verbosity) 
+	ANSIBLE_CONFIG=inv/prod/ansible.cfg ansible-playbook -i inv/prod -kK --check --diff test.yml $(verbosity) 
 
 redeploy: | clean deploy
 
@@ -48,7 +48,7 @@ k8s: k8s-config
 k8s-config:
 	rm -rf $$HOME/.kube/config
 	mkdir -p $$HOME/.kube
-	ansible -i inv/dev homelab-mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
+	ansible -i inv/dev mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
 	chmod 600 $$HOME/.kube/config
 
 k8s-dns:
@@ -61,4 +61,4 @@ k8s-dns:
 .phony: clean-pg
 
 clean-app:
-	ansible homelab-mainarray -b -m shell -a 'rm -rf /bulk-pool/nfs/application/*'
+	ansible mainarray -b -m shell -a 'rm -rf /bulk-pool/nfs/application/*'
