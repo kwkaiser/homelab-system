@@ -1,7 +1,0 @@
----
-- name: Setup common utils shared on all
-  hosts: all
-  become: true
-  tasks:
-    - name: Say foo
-      ansible.builtin.command: echo "foo"
