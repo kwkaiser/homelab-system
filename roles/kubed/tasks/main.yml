@@ -10,3 +10,6 @@
 
 - name: Sysctl k8s configs
   ansible.builtin.include_tasks: sysctl.yml
+
+- name: Ensure wireguard is installed
+  ansible.builtin.include_tasks: wg.yml
