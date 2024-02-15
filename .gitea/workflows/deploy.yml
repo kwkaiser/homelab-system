@@ -30,10 +30,9 @@ jobs:
 
       - name: Run playbook
         run: |
-          echo 'foo'
           eval $(ssh-agent -s)
           echo "$ANSIBLE_KEY" | ssh-add -
-          # ansible -i inv/prod mainarray -m shell -a "echo 'testing echo'"
-          ansible-playbook -i inv/prod --check setup-lab.yml
+          ansible-playbook -i inv/prod setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
+          SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
