@@ -33,8 +33,7 @@ jobs:
           echo 'foo'
           eval $(ssh-agent -s)
           echo "$ANSIBLE_KEY" | ssh-add -
-          # echo $(ssh-add -l)
           # ansible -i inv/prod mainarray -m shell -a "echo 'testing echo'"
-          # ansible-playbook -i inv/prod --check setup-lab.yml
+          ansible-playbook -i inv/prod --check setup-lab.yml
         env:
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
