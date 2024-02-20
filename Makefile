@@ -35,13 +35,8 @@ ssh:
 install:
 	./scripts/install-deps.sh
 
-deploy-dev: vm-up
-	ansible-playbook -i inv/dev setup-lab.yml $(verbosity) 
-
-deploy-prod:
-	ansible-playbook -i inv/prod setup-lab.yml $(verbosity) 
-
-redeploy: | clean deploy
+deploy: vm-up
+	ansible-playbook -i inv/$(inv) setup-lab.yml $(verbosity) 
 
 k8s:
 	rm -rf $$HOME/.kube/config
