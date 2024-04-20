@@ -1,0 +1,60 @@
+version: '3'
+
+tasks:
+  # Local development
+  k8s:
+    desc: "Copies k8s auth data to local host"
+    prompt: "Did you set the INV envar to dev | prod?"
+    cmds:
+      - rm -rf $HOME/.kube/config
+      - mkdir -p $HOME/.kube
+      - ansible -i "inv/$INV" mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
+      - chmod 600 $HOME/.kube/config 
+
+  clean:
+    desc: "Cleans vms and vm files"
+    cmds:
+      - vagrant halt
+      - vagrant destroy --force
+      - rm -rf .vagrant
+
+  vm:
+    desc: "Starts vagrant VMs"
+    cmds:
+      - vagrant up
+
+  # Util
+  lint:
+    desc: "Lint"
+    cmds:
+      - ansible-lint .
+
+  # Local and prod
+  install:
+    desc: "Installs roles and collections for ansible"
+    cmds:
+      - installed_roles=$(ansible-galaxy role list 2>/dev/null)
+      - installed_collections=$(ansible-galaxy collection list | grep -v - | grep -v Version | grep -v '#' | awk '{print $1}' 2>/dev/null)
+      - |
+        while read -r line || [[ -n $line ]]; do
+          if [[ "$installed_roles" != *"$line"* ]]; then
+            echo "performing role install"
+            ansible-galaxy role install "$line"
+            exit 0
+          fi
+        done < galaxy/roles.txt
+      - |
+        while read -r line || [[ -n $line ]]; do
+          if [[ "$installed_collections" != *"$line"* ]]; then
+            echo "performing collection install"
+            ansible-galaxy collection install "$line"
+            exit 0
+          fi
+        done < galaxy/collections.txt
+
+  deploy:
+    desc: "Deploys ansible script against inv"
+    deps: ["install"]
+    prompt: "Did you set the INV envar to dev | prod?"
+    cmds:
+      - ansible-playbook -i "inv/$INV" setup-lab.yml
