@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-            ref: ${{ github.event.pull_request.head.sha }}      
 
       - name: Install ansible
         run: |
@@ -21,8 +19,11 @@ jobs:
           apt install ansible --assume-yes
           apt install ansible-lint --assume-yes
 
+      - name: Install taskfile
+        run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d 
+
       - name: Install ansible galaxy deps
-        run: make install
+        run: ./bin/task install
 
       - name: Lint
-        run: ansible-lint
+        run: ./bin/task lint
