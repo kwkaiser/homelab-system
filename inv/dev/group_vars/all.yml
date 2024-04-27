@@ -17,6 +17,10 @@ zfs_volumes:
     pool: bulk-pool
     state: present
 
+  - name: nfs
+    pool: cache-pool
+    state: present
+
 zfs_pools:
   - name: bulk-pool
     action: create

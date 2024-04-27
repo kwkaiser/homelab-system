@@ -53,5 +53,6 @@ jobs:
           echo "$ANSIBLE_KEY" | ssh-add -
           ansible-playbook -i inv/prod setup-lab.yml
         env:
+          MODE: 'prod'
           ANSIBLE_KEY: ${{ secrets.ANSIBLE_KEY }}
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}

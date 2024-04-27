@@ -65,4 +65,4 @@ tasks:
       - |
         # Assume non prod-like
         INV="${MODE:-dev}"
-        ansible-playbook -i "inv/$MODE" setup-lab.yml
+        ansible-playbook -i "inv/$INV" setup-lab.yml
