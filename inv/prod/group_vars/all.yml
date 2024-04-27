@@ -13,16 +13,28 @@ zfs_volumes:
     pool: bulk-pool
     state: present
 
+  - name: nfs
+    pool: cache-pool
+    state: present
+
 zfs_pools:
   - name: bulk-pool
     action: create
     compression: lz4
     devices:
       - /dev/sda
-      - /dev/sdb
+      - /dev/sde
       - /dev/sdd
       - /dev/sdf
     type: raidz2
+    state: present
+
+  - name: cache-pool
+    action: create
+    compression: lz4
+    devices:
+      - /dev/sdb
+    type: basic
     state: present
 
 #######
