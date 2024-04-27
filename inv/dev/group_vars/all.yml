@@ -29,6 +29,14 @@ zfs_pools:
     type: raidz3
     state: present
 
+  - name: cache-pool
+    action: create
+    compression: lz4
+    devices:
+      - /dev/vdf
+    type: basic
+    state: present
+
 #######
 # K3s #
 #######

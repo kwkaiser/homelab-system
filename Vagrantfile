@@ -14,8 +14,7 @@ Vagrant.configure("2") do |config|
     v.storage :file, :size => "1G" # vdc
     v.storage :file, :size => "1G" # vdd
     v.storage :file, :size => "1G" # vde
-    v.storage :file, :size => "1G" # vdf
-    # v.linked_clone = true
+    v.storage :file, :size => "1G" # vdf, cache
   end
 
   config.vm.define "mainarray" do |sys|
