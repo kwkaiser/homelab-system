@@ -4,12 +4,14 @@ tasks:
   # Local development
   k8s:
     desc: "Copies k8s auth data to local host"
-    prompt: "Did you set the INV envar to dev | prod?"
+    prompt: "Did you set the MODE envar to dev | prod? (Defualts to: dev)"
     cmds:
-      - rm -rf $HOME/.kube/config
-      - mkdir -p $HOME/.kube
-      - ansible -i "inv/$INV" mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
-      - chmod 600 $HOME/.kube/config 
+      - |
+        INV="${MODE:-dev}"
+        rm -rf $HOME/.kube/config
+        mkdir -p $HOME/.kube
+        ansible -i "inv/$INV" mainarray -b -m fetch -a 'dest=/home/kwkaiser/.kube/config src=/etc/rancher/k3s/k3s.yaml flat=true'
+        chmod 600 $HOME/.kube/config 
 
   clean:
     desc: "Cleans vms and vm files"
@@ -18,10 +20,15 @@ tasks:
       - vagrant destroy --force
       - rm -rf .vagrant
 
-  vm:
+  vm-start:
     desc: "Starts vagrant VMs"
     cmds:
       - vagrant up
+
+  vm-halt:
+    desc: "Pauses vagrant VMs"
+    cmds:
+      - vagrant halt
 
   # Util
   lint:
@@ -55,6 +62,9 @@ tasks:
   deploy:
     desc: "Deploys ansible script against inv"
     deps: ["install"]
-    prompt: "Did you set the INV envar to dev | prod?"
+    prompt: "Did you set the MODE envar to dev | prod? (Defaults to: dev)"
     cmds:
-      - ansible-playbook -i "inv/$INV" setup-lab.yml
+      - |
+        # Assume non prod-like
+        INV="${MODE:-dev}"
+        ansible-playbook -i "inv/$MODE" setup-lab.yml
