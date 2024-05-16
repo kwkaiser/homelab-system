@@ -2,6 +2,7 @@
 - name: Install cli utils
   ansible.builtin.package:
     state: present
+    update_cache: yes
     name:
       - htop
       - fzf
