@@ -7,8 +7,8 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provider :libvirt do |v|
-    v.memory = 4096
-    v.cpus = 2
+    v.memory = 10240
+    v.cpus = 8
 
     v.storage :file, :size => "10G" # vdb
     v.storage :file, :size => "10G" # vdc
